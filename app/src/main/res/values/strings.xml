@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">CheckIn</string>
+    <string name="title_activity_splash">SplashActivity</string>
+
+    <string name="server_client_id">360697764233-b48d58h3aq1oseko2tp03bn65bfa0k5e.apps.googleusercontent.com</string>
+
+    <string name="gps_enable_message">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="yes_string">Yes</string>
+    <string name="no_string">No</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="singing_in">Signing in..</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="please_enter_your_phone_number">Please enter your phone number to continue</string>
+
+
+</resources>
