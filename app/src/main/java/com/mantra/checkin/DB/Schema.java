@@ -15,7 +15,8 @@ public class Schema {
 
     public static final String CREATE_TABLE_SETTINGS_INFO = "create table if not exists " + DbTableStrings.TABLE_NAME_SETTINGS_INFO +
             "( _id integer primary key autoincrement, "
-            + DbTableStrings.ISLOGGEDIN + " String) ";
+            + DbTableStrings.TABLE_SETTINGS_KEYS + " string, "
+            + DbTableStrings.TABLE_SETTINGS_VALUES + " string) ";
 }
 
 

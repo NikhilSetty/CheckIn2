@@ -26,6 +26,7 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
+import com.mantra.checkin.Entities.SettingsConstants;
 import com.mantra.checkin.FCM.MyFireBaseInstanceIdService;
 import com.mantra.checkin.Entities.JSONKEYS.UserInfoJSON;
 import com.mantra.checkin.MainActivity;
@@ -132,8 +133,11 @@ public class LoginActivity extends AppCompatActivity implements
                 //check if this is needed here or somewhere else
                 Log.d("VALUES","Inserting values");
                 SettingsInfo settingsInfo = new SettingsInfo();
-                settingsInfo.setIsLoggedIn("true");
+                settingsInfo.Key = SettingsConstants.LoginStatus;
+                settingsInfo.Value = "true";
                 SettingsInfoDBHandler.InsertSettingsInfo(getApplicationContext(),settingsInfo);
+                SessionHelper.loginstatus = true;
+
                 //
                 UserInfo db_user_model = new UserInfo();
                 db_user_model = UserInfoDBHandler.FetchCurrentUserDetails(getApplicationContext());
@@ -150,9 +154,8 @@ public class LoginActivity extends AppCompatActivity implements
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//                new SendUserDetailsToServer().execute("http://10.85.193.92/CheckIn/api/User/AddUser", json);
-                SendUserDetailsToServer(getApplicationContext(),json);
 
+                SendUserDetailsToServer(getApplicationContext(),json);
                 MyFireBaseInstanceIdService.sendRegistrationToServer();
                 // todo Send the details to the server for the first time
                 Intent i = new Intent(this, PhoneNumberActivity.class);
@@ -211,6 +214,16 @@ public class LoginActivity extends AppCompatActivity implements
                   try {
                       Log.d(TAG,json);
                       response = httpPost.post(SessionHelper.BaseUrl + "/CheckIn/api/User/AddUser", json);
+                      ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
+                      switch (responseStatusCodes){
+                          case Success:
+                              String serverUserID = new JSONObject(response).getJSONObject("Data").getString("data");
+                              UserInfoDBHandler.InsertCheckinServerUserID(context, serverUserID);
+                              SessionHelper.user = UserInfoDBHandler.FetchCurrentUserDetails(context);
+                              break;
+                          case Error:
+                              break;
+                      }
                       Log.d(TAG,response.toString());
                   }catch (Exception e){
                       Log.e(TAG, e.getMessage());

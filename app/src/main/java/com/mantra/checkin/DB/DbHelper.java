@@ -16,7 +16,6 @@ public class DbHelper extends SQLiteOpenHelper{
         db.execSQL(Schema.CREATE_TABLE_USERINFO);
         db.execSQL(Schema.CREATE_TABLE_SETTINGS_INFO);
         Log.v("created " , "DB");
-
     }
 
     @Override

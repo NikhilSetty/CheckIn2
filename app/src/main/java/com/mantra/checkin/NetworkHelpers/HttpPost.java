@@ -50,19 +50,13 @@ public class HttpPost {
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
-            Log.d(DEBUG_TAG,Utility.convertInputStreamToString(is));
-            return Utility.convertInputStreamToString(is);
+            String sResponse = Utility.convertInputStreamToString(is);
+            Log.d(DEBUG_TAG, sResponse);
+            return sResponse;
 
-            // Makes sure that the InputStream is closed after the app is
-            // finished using it.
         } catch (Exception e){
             Log.e(DEBUG_TAG, e.getMessage());
             return null;
-        }finally
-         {
-            if (is != null) {
-                is.close();
-            }
         }
     }
 }

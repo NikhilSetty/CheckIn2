@@ -76,7 +76,6 @@ public class UserInfoDBHandler {
                 userModel.setLastName(c.getString(c.getColumnIndex(DbTableStrings.LASTNAME)));
                 userModel.setUserEmail(c.getString(c.getColumnIndex(DbTableStrings.USEREMAIL)));
                 userModel.setUserID(c.getString(c.getColumnIndex(DbTableStrings.USERID)));
-                Log.d("TABLE",c.getString(c.getColumnIndex(DbTableStrings.USERID)));
                 userModel.setUserName(c.getString(c.getColumnIndex(DbTableStrings.USERNAME)));
                 userModel.setPhoneNumber(c.getString(c.getColumnIndex(DbTableStrings.USER_PHONE_NUMBER)));
                 userModel.setCheckInServerUserId(c.getString(c.getColumnIndex(DbTableStrings.CHECKIN_SERVER_USERID)));

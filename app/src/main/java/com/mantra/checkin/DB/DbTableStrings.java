@@ -17,7 +17,8 @@ public class DbTableStrings {
     //Strings for Settings
     public static final String TABLE_NAME_SETTINGS_INFO = "settings_info";
 
-    public static final String ISLOGGEDIN = "isLoggedIn";
+    public static final String TABLE_SETTINGS_KEYS = "keys";
+    public static final String TABLE_SETTINGS_VALUES  = "sValues";
 
 
 }

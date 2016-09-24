@@ -53,7 +53,8 @@ public class Utility {
 
             JSONObject json = new JSONObject(response);
             JSONObject status = json.getJSONObject(Constants.responseStringStatus);
-            return ResponseStatusCodes.fromInteger(status.getInt(Constants.responseIntStatusCode));
+            int code = status.getInt(Constants.responseIntStatusCode);
+            return ResponseStatusCodes.fromInteger(code);
 
         }catch (Exception e){
             Log.e(TAG, e.getMessage());

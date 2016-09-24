@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.mantra.checkin.DB.DbHelper;
 import com.mantra.checkin.DB.DbTableStrings;
 import com.mantra.checkin.Entities.Models.SettingsInfo;
+import com.mantra.checkin.Entities.SettingsConstants;
 
 /**
  * Created by adithyar on 9/21/2016.
@@ -22,12 +23,12 @@ public class SettingsInfoDBHandler {
     public static void InsertSettingsInfo(Context context, SettingsInfo settingsInfo){
         try{
             ContentValues contentValues = new ContentValues();
-            contentValues.put(DbTableStrings.ISLOGGEDIN,settingsInfo.isLoggedIn);
+            contentValues.put(DbTableStrings.TABLE_SETTINGS_KEYS, settingsInfo.Key);
+            contentValues.put(DbTableStrings.TABLE_SETTINGS_VALUES, settingsInfo.Value);
 
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
             db.insert(DbTableStrings.TABLE_NAME_SETTINGS_INFO,null,contentValues);
-            Log.d(DEBUG_TAG,settingsInfo.isLoggedIn);
         }
         catch (Exception e)
         {
@@ -36,23 +37,25 @@ public class SettingsInfoDBHandler {
     }
 
     public static boolean CheckLoginStatus(Context context){
-        String status;
+        try {
+            String status;
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
-            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_SETTINGS_INFO , null);
-        if (c.moveToFirst()) {
-                Log.d(DEBUG_TAG,c.getString(c.getColumnIndex(DbTableStrings.ISLOGGEDIN)));
-                status = (c.getString(c.getColumnIndex(DbTableStrings.ISLOGGEDIN)));
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_SETTINGS_INFO + " where " + DbTableStrings.TABLE_SETTINGS_KEYS + " = \"" + SettingsConstants.LoginStatus + "\"", null);
+            if (c.moveToFirst()) {
+                status = (c.getString(c.getColumnIndex(DbTableStrings.TABLE_SETTINGS_VALUES)));
                 Log.d(DEBUG_TAG, status);
-                if (status == "true"){
-                    Log.d(DEBUG_TAG,"returning true");
+                if (status.equals("true")) {
+                    Log.d(DEBUG_TAG, "returning true");
                     return true;
-                }else
-                {
+                } else {
                     return false;
                 }
             }
-        Log.d(DEBUG_TAG,"returning false");
+            Log.d(DEBUG_TAG, "returning false");
+        }catch (Exception e){
+            Log.e(DEBUG_TAG, e.getMessage());
+        }
         return false;
     }
 }
