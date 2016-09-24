@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
-            showProgressDialog();
+            //showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
@@ -130,22 +130,22 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 //check if this is needed here or somewhere else
+                Log.d("VALUES","Inserting values");
                 SettingsInfo settingsInfo = new SettingsInfo();
-                settingsInfo.setLoggedIn(true);
+                settingsInfo.setIsLoggedIn("true");
                 SettingsInfoDBHandler.InsertSettingsInfo(getApplicationContext(),settingsInfo);
                 //
                 UserInfo db_user_model = new UserInfo();
                 db_user_model = UserInfoDBHandler.FetchCurrentUserDetails(getApplicationContext());
-                UserInfoJSON userInfoJSON = new UserInfoJSON();
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put(userInfoJSON.FIRSTNAME, db_user_model.getFirstName());
-                    jsonObject.put(userInfoJSON.LASTNAME, db_user_model.getLastName());
-                    jsonObject.put(userInfoJSON.USERNAME, db_user_model.getUserName());
-                    jsonObject.put(userInfoJSON.USEREMAIL, db_user_model.getUserEmail());
-                    jsonObject.put(userInfoJSON.USERID, db_user_model.getUserID().toString());
-                    jsonObject.put(userInfoJSON.USER_PHONE_NUMBER, db_user_model.getPhoneNumber());
-                    jsonObject.put(userInfoJSON.USERPHOTO, "dummy url");
+                    jsonObject.put(UserInfoJSON.FIRSTNAME, db_user_model.getFirstName());
+                    jsonObject.put(UserInfoJSON.LASTNAME, db_user_model.getLastName());
+                    jsonObject.put(UserInfoJSON.USERNAME, db_user_model.getUserName());
+                    jsonObject.put(UserInfoJSON.USEREMAIL, db_user_model.getUserEmail());
+                    jsonObject.put(UserInfoJSON.USERID, db_user_model.getUserID());
+                    jsonObject.put(UserInfoJSON.USER_PHONE_NUMBER, db_user_model.getPhoneNumber());
+                    jsonObject.put(UserInfoJSON.USERPHOTO, "dummy url");
                     json = jsonObject.toString();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -170,15 +170,15 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.singing_in));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
+//    private void showProgressDialog() {
+//        if (mProgressDialog == null) {
+//            mProgressDialog = new ProgressDialog(this);
+//            mProgressDialog.setMessage(getString(R.string.singing_in));
+//            mProgressDialog.setIndeterminate(true);
+//        }
+//
+//        mProgressDialog.show();
+//    }
 
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -210,14 +210,15 @@ public class LoginActivity extends AppCompatActivity implements
                   HttpPost httpPost = new HttpPost();
                   try {
                       Log.d("BBBBBBBBBBB",json);
-                      response = httpPost.post("http://10.85.193.92/CheckIn/api/User/AddUser", json);
-                      Log.d("AAAAAAAAAAAAAAAAAAAA",response);
+                      response = httpPost.post("http://10.84.244.14/CheckIn/api/User/AddUser", json);
+                      Log.d("AAAAAAAAAAAAAAAAAAAA",response.toString());
                   }catch (Exception e){
                   }
                   return response;
               }
           };
             PostServerDetails.execute("");
+            //addCheckInServerUserIDtoDB(response);
         }
 
 }

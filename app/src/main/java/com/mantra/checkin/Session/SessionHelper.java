@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 
+import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
+import com.mantra.checkin.Entities.Models.SettingsInfo;
 import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
 import com.mantra.checkin.SignUp.LoginActivity;
@@ -21,14 +23,16 @@ public class SessionHelper {
     public static LocationUtility mLocationUtility;
     public static Location mLocation;
     public static UserInfo user;
+    public static Boolean loginstatus;
 
     public SessionHelper(Context context){
         mR = context.getResources();
         mLocationUtility = new LocationUtility(context);
-        if (!UserInfoDBHandler.CheckIfUserExistsInDB(context.getApplicationContext())) {
-            user = UserInfoDBHandler.FetchCurrentUserDetails(context);
-        }else{
-            user = new UserInfo();
-        }
+//        if (!UserInfoDBHandler.CheckIfUserExistsInDB(context.getApplicationContext())) {
+//            user = UserInfoDBHandler.FetchCurrentUserDetails(context);
+//        }else{
+//            user = new UserInfo();
+//        }
+        loginstatus = SettingsInfoDBHandler.CheckLoginStatus(context);
     }
 }

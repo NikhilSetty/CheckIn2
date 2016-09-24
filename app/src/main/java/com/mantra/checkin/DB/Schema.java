@@ -11,11 +11,11 @@ public class Schema {
             + DbTableStrings.LASTNAME + " string, "
             + DbTableStrings.USER_PHONE_NUMBER + " string, "
             + DbTableStrings.CHECKIN_SERVER_USERID + " string, "
-            + DbTableStrings.USERID + " string) ";
+            + DbTableStrings.USERID + " VARCHAR(255)) ";
 
     public static final String CREATE_TABLE_SETTINGS_INFO = "create table if not exists " + DbTableStrings.TABLE_NAME_SETTINGS_INFO +
             "( _id integer primary key autoincrement, "
-            + DbTableStrings.ISLOGGEDIN + " boolean) ";
+            + DbTableStrings.ISLOGGEDIN + " String) ";
 }
 
 

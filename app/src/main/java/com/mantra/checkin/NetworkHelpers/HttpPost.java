@@ -21,6 +21,7 @@ public class HttpPost {
         InputStream is = null;
 
         try {
+            Log.d(DEBUG_TAG,"posting");
             URL url = new URL(stringUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(15000 /* milliseconds */);
@@ -49,6 +50,7 @@ public class HttpPost {
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
+            Log.d(DEBUG_TAG,Utility.convertInputStreamToString(is));
             return Utility.convertInputStreamToString(is);
 
             // Makes sure that the InputStream is closed after the app is
