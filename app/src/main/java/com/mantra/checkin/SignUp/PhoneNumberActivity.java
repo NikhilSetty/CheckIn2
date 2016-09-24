@@ -74,7 +74,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
                         try {
                             JSONObject json = new JSONObject();
 
-                            json.put("CheckInServerUserId", "");
+                            json.put("CheckInServerUserId", SessionHelper.user.getCheckInServerUserId());
                             json.put("PhoneNumber", phoneNumber);
                             String jsonEntity = json.toString();
                             String response = new HttpPost().post("serverUrl", jsonEntity);

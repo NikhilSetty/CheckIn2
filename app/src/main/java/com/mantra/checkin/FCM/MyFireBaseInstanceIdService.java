@@ -41,14 +41,14 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
         AsyncTask<String, Boolean, Boolean> sendRegIdToServer = new AsyncTask<String, Boolean, Boolean>() {
             @Override
             protected Boolean doInBackground(String[] params) {
-                if(!SessionHelper.loginstatus && !token.isEmpty()) {
+                if(SessionHelper.loginstatus && !token.isEmpty()) {
                     try {
                         JSONObject json = new JSONObject();
 
-                        json.put("CheckInServerUserId", "");
+                        json.put("CheckInServerUserId", SessionHelper.user.getCheckInServerUserId());
                         json.put("RegistrationId", token);
                         String jsonEntity = json.toString();
-                        String response = new HttpPost().post("", jsonEntity);
+                        String response = new HttpPost().post(SessionHelper.BaseUrl + "\\", jsonEntity);
 
                         ResponseStatusCodes statusCodes = Utility.getResponseStatus(response);
 

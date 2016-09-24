@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements
         mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("360697764233-lukurm2i9li3o4atg0mn01mhaon1u6le.apps.googleusercontent.com")
                 .requestEmail()
                 .requestProfile()
                 .build();
@@ -217,7 +218,7 @@ public class LoginActivity extends AppCompatActivity implements
                       ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
                       switch (responseStatusCodes){
                           case Success:
-                              String serverUserID = new JSONObject(response).getJSONObject("Data").getString("data");
+                              String serverUserID = new JSONObject(response).getJSONObject("Data").getString("UserId");
                               UserInfoDBHandler.InsertCheckinServerUserID(context, serverUserID);
                               SessionHelper.user = UserInfoDBHandler.FetchCurrentUserDetails(context);
                               break;

@@ -7,9 +7,11 @@ import android.location.Location;
 
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
+import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
 import com.mantra.checkin.Entities.Models.SettingsInfo;
 import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
+import com.mantra.checkin.NetworkHelpers.Utility;
 import com.mantra.checkin.SignUp.LoginActivity;
 
 
@@ -39,5 +41,7 @@ public class SessionHelper {
         }else{
             user = new UserInfo();
         }
+
+        ResponseStatusCodes codes = Utility.getResponseStatus("{\"Status\":{\"Code\":0,\"Message\":\"Added User\"},\"Data\":{\"UserId\":\"2012\"}}");
     }
 }

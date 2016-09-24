@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by nravishankar on 9/19/2016.
@@ -38,14 +39,24 @@ public class Utility {
     }
 
     public static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+        br.close();
+        String response = sb.toString();
+        response = response.replace("\\", "");
+        return (response.substring(1, response.length() - 1));
+    }
 
-        inputStream.close();
-        return result;
+    public static String convertStandardJSONString(String data_json) {
+        data_json = data_json.replaceAll("\\\\r\\\\n", "");
+        data_json = data_json.replace("\"{", "{");
+        data_json = data_json.replace("}\",", "},");
+        data_json = data_json.replace("}\"", "}");
+        return data_json;
     }
 
     public static ResponseStatusCodes getResponseStatus(String response){
