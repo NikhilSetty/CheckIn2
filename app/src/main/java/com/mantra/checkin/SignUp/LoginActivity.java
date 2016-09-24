@@ -209,10 +209,11 @@ public class LoginActivity extends AppCompatActivity implements
               protected String doInBackground(String... strings) {
                   HttpPost httpPost = new HttpPost();
                   try {
-                      Log.d("BBBBBBBBBBB",json);
-                      response = httpPost.post("http://10.84.244.14/CheckIn/api/User/AddUser", json);
-                      Log.d("AAAAAAAAAAAAAAAAAAAA",response.toString());
+                      Log.d(TAG,json);
+                      response = httpPost.post(SessionHelper.BaseUrl + "/CheckIn/api/User/AddUser", json);
+                      Log.d(TAG,response.toString());
                   }catch (Exception e){
+                      Log.e(TAG, e.getMessage());
                   }
                   return response;
               }

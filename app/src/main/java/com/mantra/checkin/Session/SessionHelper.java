@@ -18,7 +18,7 @@ import com.mantra.checkin.SignUp.LoginActivity;
  */
 public class SessionHelper {
 
-    public static String BaseUrl = "http://10.85.194.227:2323";
+    public static String BaseUrl = "http://192.168.1.107";
     public static Resources mR;
     public static LocationUtility mLocationUtility;
     public static Location mLocation;
@@ -34,5 +34,10 @@ public class SessionHelper {
 //            user = new UserInfo();
 //        }
         loginstatus = SettingsInfoDBHandler.CheckLoginStatus(context);
+        if(loginstatus){
+            user = UserInfoDBHandler.FetchCurrentUserDetails(context);
+        }else{
+            user = new UserInfo();
+        }
     }
 }

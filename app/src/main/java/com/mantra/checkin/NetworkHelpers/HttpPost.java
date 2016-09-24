@@ -24,6 +24,7 @@ public class HttpPost {
             Log.d(DEBUG_TAG,"posting");
             URL url = new URL(stringUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.disconnect();
             conn.setConnectTimeout(15000 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
@@ -32,7 +33,7 @@ public class HttpPost {
                     "application/x-www-form-urlencoded");
 
             // Set the entity for the request
-            if(entity != null && entity.isEmpty()) {
+            if(entity != null && !entity.isEmpty()) {
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
@@ -42,9 +43,8 @@ public class HttpPost {
                 os.close();
             }
 
-            conn.setDoInput(true);
+            // conn.setDoInput(true);
             // Starts the query
-            conn.connect();
             int response = conn.getResponseCode();
             Log.d(DEBUG_TAG, "The response is: " + response);
             is = conn.getInputStream();
@@ -55,7 +55,11 @@ public class HttpPost {
 
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
-        } finally {
+        } catch (Exception e){
+            Log.e(DEBUG_TAG, e.getMessage());
+            return null;
+        }finally
+         {
             if (is != null) {
                 is.close();
             }

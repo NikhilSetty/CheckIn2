@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Session.SessionHelper;
 import com.mantra.checkin.SignUp.LoginActivity;
+import com.mantra.checkin.SignUp.PhoneNumberActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -40,10 +41,18 @@ public class SplashActivity extends AppCompatActivity {
 //                    startActivity(i);
 //        }
         //
-
+        if(!SessionHelper.loginstatus){
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+        }else if(SessionHelper.user.getPhoneNumber().isEmpty()){
+            Intent i = new Intent(this, PhoneNumberActivity.class);
+            startActivity(i);
+        }else{
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+        }
         // todo Launch Background thread to finish initialization and then launch activity
-        Intent i = new Intent(this, LoginActivity.class);
-        startActivity(i);
+
         finish();
     }
 
