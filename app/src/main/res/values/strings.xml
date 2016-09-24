@@ -9,6 +9,7 @@
     <string name="no_string">No</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="singing_in">Signing in..</string>
+    <string name="Fetching_details">Fetching user details</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

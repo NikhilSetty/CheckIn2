@@ -1,7 +1,9 @@
 package com.mantra.checkin.FCM;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -29,7 +31,7 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
         //Displaying token on logcat
         Log.d(TAG, "Refreshed token: " + refreshedToken);
         token = refreshedToken;
-        sendRegistrationToServer();
+        sendRegistrationToServer(getApplicationContext());
     }
 
     public static String getToken(){
@@ -37,10 +39,11 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
         return FirebaseInstanceId.getInstance().getToken();
     }
 
-    public static void sendRegistrationToServer() {
+    public static void sendRegistrationToServer(final Context context ) {
         AsyncTask<String, Boolean, Boolean> sendRegIdToServer = new AsyncTask<String, Boolean, Boolean>() {
             @Override
             protected Boolean doInBackground(String[] params) {
+                Log.d(TAG,SessionHelper.loginstatus.toString());
                 if(SessionHelper.loginstatus && !token.isEmpty()) {
                     try {
                         JSONObject json = new JSONObject();
@@ -70,6 +73,12 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
+                if(aBoolean) {
+                    Toast.makeText(context, "Registeration Successful", Toast.LENGTH_LONG).show();
+                }else
+                {
+                    Toast.makeText(context, "Registeration Failed", Toast.LENGTH_LONG).show();
+                }
             }
         };
         sendRegIdToServer.execute("");
