@@ -138,7 +138,6 @@ public class LoginActivity extends AppCompatActivity implements
                 SettingsInfoDBHandler.InsertSettingsInfo(getApplicationContext(),settingsInfo);
                 SessionHelper.loginstatus = true;
 
-                //
                 UserInfo db_user_model = new UserInfo();
                 db_user_model = UserInfoDBHandler.FetchCurrentUserDetails(getApplicationContext());
                 JSONObject jsonObject = new JSONObject();
@@ -156,8 +155,6 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 SendUserDetailsToServer(getApplicationContext(),json);
-                // todo Send the details to the server for the first time
-
             }
             else {
                 //Exception to be raised here
@@ -230,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements
               protected String doInBackground(String... strings) {
                   HttpPost httpPost = new HttpPost();
                   try {
-                      Log.d(TAG,json);
+                      Log.d(TAG, json);
                       response = httpPost.post(SessionHelper.BaseUrl + "/CheckIn/api/User/AddUser", json);
                       ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
                       switch (responseStatusCodes){
@@ -242,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements
                           case Error:
                               break;
                       }
-                      Log.d(TAG,response.toString());
+                      Log.d(TAG, response);
                   }catch (Exception e){
                       Log.e(TAG, e.getMessage());
                   }

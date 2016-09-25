@@ -50,7 +50,12 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignUp.PhoneNumberActivity"></activity>
+        <activity android:name=".SignUp.PhoneNumberActivity" />
+
+        <service
+            android:name=".Service.LocationMonitoringService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

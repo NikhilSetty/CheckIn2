@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
+import android.util.Log;
 
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
@@ -12,6 +13,7 @@ import com.mantra.checkin.Entities.Models.SettingsInfo;
 import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
 import com.mantra.checkin.NetworkHelpers.Utility;
+import com.mantra.checkin.Service.LocationMonitoringService;
 import com.mantra.checkin.SignUp.LoginActivity;
 
 
@@ -19,6 +21,8 @@ import com.mantra.checkin.SignUp.LoginActivity;
  * Created by nravishankar on 9/19/2016.
  */
 public class SessionHelper {
+
+    private final String TAG = "SessionHelper";
 
     public static String BaseUrl = "http://10.84.244.17";
     public static Resources mR;
@@ -30,11 +34,6 @@ public class SessionHelper {
     public SessionHelper(Context context){
         mR = context.getResources();
         mLocationUtility = new LocationUtility(context);
-//        if (!UserInfoDBHandler.CheckIfUserExistsInDB(context.getApplicationContext())) {
-//            user = UserInfoDBHandler.FetchCurrentUserDetails(context);
-//        }else{
-//            user = new UserInfo();
-//        }
         loginstatus = SettingsInfoDBHandler.CheckLoginStatus(context);
         if(loginstatus){
             user = UserInfoDBHandler.FetchCurrentUserDetails(context);
@@ -42,6 +41,11 @@ public class SessionHelper {
             user = new UserInfo();
         }
 
-        ResponseStatusCodes codes = Utility.getResponseStatus("{\"Status\":{\"Code\":0,\"Message\":\"Added User\"},\"Data\":{\"UserId\":\"2012\"}}");
+        try{
+            Intent i = new Intent(context, LocationMonitoringService.class);
+            context.startService(i);
+        }catch (Exception e){
+            Log.e(TAG, "Service start command : " + e.getMessage());
+        }
     }
 }

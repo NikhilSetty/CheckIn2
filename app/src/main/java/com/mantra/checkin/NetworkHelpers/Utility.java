@@ -47,7 +47,7 @@ public class Utility {
         }
         br.close();
         String response = sb.toString();
-        response = response.replace("\\", "");
+        response = response.replace("\\\"", "\"");
         return (response.substring(1, response.length() - 1));
     }
 
