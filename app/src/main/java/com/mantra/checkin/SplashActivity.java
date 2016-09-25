@@ -41,8 +41,7 @@ public class SplashActivity extends AppCompatActivity {
 //                    startActivity(i);
 //        }
         //
-        // if(!SessionHelper.loginstatus){
-        if(true){
+        if(!SessionHelper.loginstatus){
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
         }else if(SessionHelper.user.getPhoneNumber().isEmpty()){
