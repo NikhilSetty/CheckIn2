@@ -132,7 +132,6 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 //check if this is needed here or somewhere else
-                Log.d("VALUES","Inserting values");
                 SettingsInfo settingsInfo = new SettingsInfo();
                 settingsInfo.Key = SettingsConstants.LoginStatus;
                 settingsInfo.Value = "true";
@@ -157,11 +156,8 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 SendUserDetailsToServer(getApplicationContext(),json);
-                MyFireBaseInstanceIdService.sendRegistrationToServer();
                 // todo Send the details to the server for the first time
-                Intent i = new Intent(this, PhoneNumberActivity.class);
-                startActivity(i);
-                finish();
+
             }
             else {
                 //Exception to be raised here
@@ -173,16 +169,15 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.singing_in));
+            mProgressDialog.setIndeterminate(true);
+        }
 
-//    private void showProgressDialog() {
-//        if (mProgressDialog == null) {
-//            mProgressDialog = new ProgressDialog(this);
-//            mProgressDialog.setMessage(getString(R.string.singing_in));
-//            mProgressDialog.setIndeterminate(true);
-//        }
-//
-//        mProgressDialog.show();
-//    }
+        mProgressDialog.show();
+    }
 
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -207,8 +202,30 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-        public static void SendUserDetailsToServer(final Context context,final String json) {
+        public void SendUserDetailsToServer(final Context context,final String json) {
           AsyncTask<String,String,String> PostServerDetails = new AsyncTask<String,String,String>(){
+              @Override
+              protected void onPreExecute() {
+                  mProgressDialog = new ProgressDialog(LoginActivity.this);
+                  mProgressDialog.setMessage(getString(R.string.Fetching_details));
+                  mProgressDialog.show();
+                  super.onPreExecute();
+              }
+
+              @Override
+              protected void onPostExecute(String s) {
+                  super.onPostExecute(s);
+                  mProgressDialog.dismiss();
+                  if (s == null){
+                      Toast.makeText(LoginActivity.this,"Unable to Reach our servers Please try again later",Toast.LENGTH_LONG).show();
+                  }else {
+                      MyFireBaseInstanceIdService.sendRegistrationToServer(LoginActivity.this);
+                      Intent i = new Intent(LoginActivity.this, PhoneNumberActivity.class);
+                      startActivity(i);
+                      finish();
+                  }
+              }
+
               @Override
               protected String doInBackground(String... strings) {
                   HttpPost httpPost = new HttpPost();
