@@ -23,8 +23,8 @@ public class SettingsInfoDBHandler {
     public static void InsertSettingsInfo(Context context, SettingsInfo settingsInfo){
         try{
             ContentValues contentValues = new ContentValues();
-            contentValues.put(DbTableStrings.TABLE_SETTINGS_KEYS, settingsInfo.Key);
-            contentValues.put(DbTableStrings.TABLE_SETTINGS_VALUES, settingsInfo.Value);
+            contentValues.put(DbTableStrings.SETTINGS_KEYS, settingsInfo.Key);
+            contentValues.put(DbTableStrings.SETTINGS_VALUES, settingsInfo.Value);
 
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
@@ -41,9 +41,9 @@ public class SettingsInfoDBHandler {
             String status;
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
-            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_SETTINGS_INFO + " where " + DbTableStrings.TABLE_SETTINGS_KEYS + " = \"" + SettingsConstants.LoginStatus + "\"", null);
+            Cursor c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_SETTINGS_INFO + " where " + DbTableStrings.SETTINGS_KEYS + " = \"" + SettingsConstants.LoginStatus + "\"", null);
             if (c.moveToFirst()) {
-                status = (c.getString(c.getColumnIndex(DbTableStrings.TABLE_SETTINGS_VALUES)));
+                status = (c.getString(c.getColumnIndex(DbTableStrings.SETTINGS_VALUES)));
                 Log.d(DEBUG_TAG, status);
                 if (status.equals("true")) {
                     Log.d(DEBUG_TAG, "returning true");

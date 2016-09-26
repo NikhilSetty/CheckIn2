@@ -43,8 +43,8 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
         AsyncTask<String, Boolean, Boolean> sendRegIdToServer = new AsyncTask<String, Boolean, Boolean>() {
             @Override
             protected Boolean doInBackground(String[] params) {
-                Log.d(TAG,SessionHelper.loginstatus.toString());
-                if(SessionHelper.loginstatus && !token.isEmpty()) {
+                Log.d(TAG,SessionHelper.LoginStatus.toString());
+                if(SessionHelper.LoginStatus && !token.isEmpty()) {
                     try {
                         JSONObject json = new JSONObject();
 

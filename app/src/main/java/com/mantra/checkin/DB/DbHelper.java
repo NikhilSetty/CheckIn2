@@ -15,6 +15,16 @@ public class DbHelper extends SQLiteOpenHelper{
         Log.v("creating " , "DB");
         db.execSQL(Schema.CREATE_TABLE_USERINFO);
         db.execSQL(Schema.CREATE_TABLE_SETTINGS_INFO);
+        db.execSQL(Schema.CREATE_TABLE_CHANNEL);
+        db.execSQL(Schema.CREATE_TABLE_NAME_APPLICATIONS);
+        db.execSQL(Schema.CREATE_TABLE_NAME_CHAT_MESSAGES);
+        db.execSQL(Schema.CREATE_TABLE_NAME_CHAT_ROOMS);
+        db.execSQL(Schema.CREATE_TABLE_NAME_CONTACTS);
+        db.execSQL(Schema.CREATE_TABLE_NAME_VENUE_DETAILS);
+        db.execSQL(Schema.CREATE_TABLE_PROFILE_SETTINGS);
+        db.execSQL(Schema.CREATE_TABLE_PROFILES);
+        db.execSQL(Schema.CREATE_TABLE_RESOURCES);
+        db.execSQL(Schema.CREATE_TABLE_URL);
         Log.v("created " , "DB");
     }
 

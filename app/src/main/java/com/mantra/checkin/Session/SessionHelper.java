@@ -6,15 +6,12 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.util.Log;
 
+import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
-import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
-import com.mantra.checkin.Entities.Models.SettingsInfo;
 import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
-import com.mantra.checkin.NetworkHelpers.Utility;
 import com.mantra.checkin.Service.LocationMonitoringService;
-import com.mantra.checkin.SignUp.LoginActivity;
 
 
 /**
@@ -29,23 +26,28 @@ public class SessionHelper {
     public static LocationUtility mLocationUtility;
     public static Location mLocation;
     public static UserInfo user;
-    public static Boolean loginstatus;
+    public static Boolean LoginStatus = false;
+    public static Boolean AnySubscribedChannels = false;
 
     public SessionHelper(Context context){
         mR = context.getResources();
         mLocationUtility = new LocationUtility(context);
-        loginstatus = SettingsInfoDBHandler.CheckLoginStatus(context);
-        if(loginstatus){
+        LoginStatus = SettingsInfoDBHandler.CheckLoginStatus(context);
+        if(LoginStatus){
             user = UserInfoDBHandler.FetchCurrentUserDetails(context);
         }else{
             user = new UserInfo();
         }
 
+        // Start location monitoring service
         try{
             Intent i = new Intent(context, LocationMonitoringService.class);
             context.startService(i);
         }catch (Exception e){
             Log.e(TAG, "Service start command : " + e.getMessage());
         }
+
+        // Check if there are any subscribed channels
+        AnySubscribedChannels = ChannelDbHandler.CheckIfUserHasSubscribedToAnyChannels(context);
     }
 }

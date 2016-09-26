@@ -119,7 +119,7 @@ public class UserInfoDBHandler {
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
             UserInfo dbuser = FetchCurrentUserDetails(context);
-            if (dbuser !=null) {
+            if (dbuser != null) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DbTableStrings.CHECKIN_SERVER_USERID, userid);
                 db.update(DbTableStrings.TABLE_NAME_USER_INFO, contentValues, "_id =" + dbuser._id, null);

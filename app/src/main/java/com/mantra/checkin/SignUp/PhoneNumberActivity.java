@@ -106,6 +106,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
             // Launch Next Activity
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+            finish();
 
         }catch (Exception e){
             Log.e(TAG, e.getMessage());

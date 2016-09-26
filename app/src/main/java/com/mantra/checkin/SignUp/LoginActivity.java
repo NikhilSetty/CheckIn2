@@ -21,15 +21,12 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.i18n.phonenumbers.Phonenumber;
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
 import com.mantra.checkin.Entities.SettingsConstants;
 import com.mantra.checkin.FCM.MyFireBaseInstanceIdService;
 import com.mantra.checkin.Entities.JSONKEYS.UserInfoJSON;
-import com.mantra.checkin.MainActivity;
 import com.mantra.checkin.Entities.Models.SettingsInfo;
 import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
@@ -39,8 +36,6 @@ import com.mantra.checkin.Session.SessionHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -136,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements
                 settingsInfo.Key = SettingsConstants.LoginStatus;
                 settingsInfo.Value = "true";
                 SettingsInfoDBHandler.InsertSettingsInfo(getApplicationContext(),settingsInfo);
-                SessionHelper.loginstatus = true;
+                SessionHelper.LoginStatus = true;
 
                 UserInfo db_user_model = new UserInfo();
                 db_user_model = UserInfoDBHandler.FetchCurrentUserDetails(getApplicationContext());
