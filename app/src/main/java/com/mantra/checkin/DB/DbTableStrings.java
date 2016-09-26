@@ -95,6 +95,7 @@ public class DbTableStrings {
     public static final String CHAT_MESSAGES_MESSAGE = "chat_messages_message";
     public static final String CHAT_MESSAGES_TIME = "chat_messages_time_stamp";
     public static final String CHAT_MESSAGES_URL = "chat_messages_url";
+    public static final String CHAT_MESSAGES_NAME = "chat_messages_name";
 
     // Url
     public static final String TABLE_NAME_URL = "urls";

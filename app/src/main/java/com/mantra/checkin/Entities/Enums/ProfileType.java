@@ -5,5 +5,15 @@ package com.mantra.checkin.Entities.Enums;
  */
 public enum ProfileType {
     Wifi,
-    AudioProfile
+    AudioProfile;
+
+    public static ProfileType fromInteger(int x) {
+        switch(x) {
+            case 0:
+                return Wifi;
+            case 1:
+                return AudioProfile;
+        }
+        return null;
+    }
 }
