@@ -16,4 +16,24 @@ public enum ProfileType {
         }
         return null;
     }
+
+    public static String getStringForDb(ProfileType type) {
+        switch(type) {
+            case Wifi:
+                return "0";
+            case AudioProfile:
+                return "1";
+        }
+        return null;
+    }
+
+    public static ProfileType getFromDbString(String string) {
+        switch(string) {
+            case "0":
+                return Wifi;
+            case "1":
+                return AudioProfile;
+        }
+        return null;
+    }
 }

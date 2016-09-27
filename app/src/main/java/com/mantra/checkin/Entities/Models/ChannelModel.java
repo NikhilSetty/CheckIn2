@@ -1,8 +1,10 @@
 package com.mantra.checkin.Entities.Models;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.Entities.Enums.ResourceType;
 import com.mantra.checkin.Entities.JSONKEYS.ChannelJsonKeys;
 
@@ -47,7 +49,7 @@ public class ChannelModel {
         ChannelActiveLocation.setLongitude(0);
     }
 
-    public static ChannelModel addChannelToDbAndGetModelFromJson(String jsonEntity){
+    public static ChannelModel addChannelToDbAndGetModelFromJson(Context context, String jsonEntity){
         try{
 
             JSONObject root = new JSONObject(jsonEntity);
@@ -148,6 +150,8 @@ public class ChannelModel {
                     model.Resources.add(channelResourceModel);
                 }
             }
+
+            ChannelDbHandler.AddChannelToDbIfItDoesNotExist(context, model);
 
             return model;
             // todo inser into db
