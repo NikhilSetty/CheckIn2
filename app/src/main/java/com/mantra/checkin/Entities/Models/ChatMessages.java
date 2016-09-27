@@ -39,7 +39,7 @@ public class ChatMessages {
             model.IsImage = modelObject.getBoolean(ChatMessagesJsonKeys.ChatMessageIsImage);
             model.IsAdminMessage = modelObject.getBoolean(ChatMessagesJsonKeys.ChatMessageIsAdminMessage);
             model.SenderId = Integer.toString(modelObject.getInt(ChatMessagesJsonKeys.ChatMessageUserId));
-            if(model.IsImage) {
+            if(!model.IsImage) {
                 model.Message = modelObject.getString(ChatMessagesJsonKeys.ChatMessageChatMessage);
             }else{
                 model.ImageUrl = modelObject.getString(ChatMessagesJsonKeys.ChatMessageChatMessage);

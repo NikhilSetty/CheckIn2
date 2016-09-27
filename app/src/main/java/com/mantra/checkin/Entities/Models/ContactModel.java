@@ -24,7 +24,7 @@ public class ContactModel {
             ContactModel model = new ContactModel();
             JSONObject modelObject = new JSONObject(contactsArray.get(i).toString());
 
-            model.ContactId = ""; // todo generate Contact Id
+            model.ContactId = String.valueOf(modelObject.getInt(ContactsJsonKeys.ContactId));
             model.ContactName = modelObject.getString(ContactsJsonKeys.ContactName);
             model.ContactNumber = modelObject.getString(ContactsJsonKeys.ContactNumber);
             model.ContactPosition = modelObject.getString(ContactsJsonKeys.ContactTitle);

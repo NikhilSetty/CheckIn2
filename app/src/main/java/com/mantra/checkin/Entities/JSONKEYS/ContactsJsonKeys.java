@@ -7,4 +7,5 @@ public class ContactsJsonKeys {
     public final static String ContactName = "ContactName";
     public final static String ContactNumber = "ContactNumber";
     public final static String ContactTitle = "Title";
+    public final static String ContactId  = "ContactId";
 }

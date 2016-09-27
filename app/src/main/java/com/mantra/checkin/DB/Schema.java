@@ -82,6 +82,7 @@ public class Schema {
             + DbTableStrings.CHAT_MESSAGES_REFERENCE_FOREIGN_KEY + " string, "
             + DbTableStrings.CHAT_MESSAGES_TIME + " string, "
             + DbTableStrings.CHAT_MESSAGES_NAME + " string, "
+            + DbTableStrings.CHAT_MESSAGES_SENDER_ID + " string, "
             + DbTableStrings.CHAT_MESSAGES_URL + " string) ";
 
     public static final String CREATE_TABLE_URL  = "create table if not exists " + DbTableStrings.TABLE_NAME_URL +
