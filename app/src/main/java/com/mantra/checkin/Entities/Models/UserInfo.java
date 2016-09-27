@@ -1,5 +1,9 @@
 package com.mantra.checkin.Entities.Models;
 
+import android.net.Uri;
+
+import java.net.URI;
+
 /**
  * Created by adithyar on 9/21/2016.
  */
@@ -13,13 +17,13 @@ public class UserInfo {
     public String UserID = "";
     //CheckInServerUserId from CheckIn Server
     public String CheckInServerUserId = "";
-    public String RemotePhotoServerURL = "";
+    public String RemotePhotoServerURL;
     public String PhoneNumber = "";
     public int _id = 0;
 
 
     public String getRemotePhotoServerURL() {
-        return RemotePhotoServerURL;
+        return RemotePhotoServerURL.toString();
     }
 
     public void setRemotePhotoServerURL(String remotePhotoServerURL) {

@@ -41,6 +41,37 @@ public class ChannelModel {
     public List<VenueModel> Venues = new ArrayList<VenueModel>();
     public List<ChatRoomModel> ChatRooms = new ArrayList<ChatRoomModel>();
 
+    public String getChannelId() {
+        return ChannelId;
+    }
+
+    public void setChannelId(String channelId) {
+        ChannelId = channelId;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public Boolean getPublic() {
+        return IsPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        IsPublic = aPublic;
+    }
+
+    public Boolean getLocationBased() {
+        return IsLocationBased;
+    }
+
+    public void setLocationBased(Boolean locationBased) {
+        IsLocationBased = locationBased;
+    }
 
     public ChannelModel(){
         ChannelActiveLocation.setLatitude(0);

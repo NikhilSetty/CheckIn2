@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.mantra.checkin.ChannelListForUser;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
 import com.mantra.checkin.MainActivity;
@@ -104,9 +105,15 @@ public class PhoneNumberActivity extends AppCompatActivity {
             updatePhoneNumber.execute("");
 
             // Launch Next Activity
-            Intent i = new Intent(this, MainActivity.class);
+            if(SessionHelper.AnySubscribedChannels){
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }else{
+            Intent i = new Intent(this, ChannelListForUser.class);
             startActivity(i);
             finish();
+            }
 
         }catch (Exception e){
             Log.e(TAG, e.getMessage());

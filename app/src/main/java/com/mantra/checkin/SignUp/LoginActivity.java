@@ -3,6 +3,7 @@ package com.mantra.checkin.SignUp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.mantra.checkin.APIURLs.APIUrls;
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
@@ -121,6 +123,11 @@ public class LoginActivity extends AppCompatActivity implements
                     userinfo.setFirstName(acct.getGivenName());
                     userinfo.setLastName(acct.getFamilyName());
                     userinfo.setUserID(acct.getId());
+                    if(acct.getPhotoUrl().toString() == null){
+                        userinfo.setUserPhoto("");
+                    }else {
+                        userinfo.setUserPhoto(acct.getPhotoUrl().toString());
+                    }
                     UserInfoDBHandler.InsertUserDetails(getApplicationContext(), userinfo);
                 }catch(Exception e){
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -223,7 +230,7 @@ public class LoginActivity extends AppCompatActivity implements
                   HttpPost httpPost = new HttpPost();
                   try {
                       Log.d(TAG, json);
-                      response = httpPost.post(SessionHelper.BaseUrl + "/CheckIn/api/User/AddUser", json);
+                      response = httpPost.post(APIUrls.BaseURl + APIUrls.ADDUSER, json);
                       ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
                       switch (responseStatusCodes){
                           case Success:
@@ -242,7 +249,6 @@ public class LoginActivity extends AppCompatActivity implements
               }
           };
             PostServerDetails.execute("");
-            //addCheckInServerUserIDtoDB(response);
         }
 
 }

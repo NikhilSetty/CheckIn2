@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/et_otp_alert"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/bt_otp_request_alert"
+        android:layout_alignStart="@+id/bt_otp_login_alert">
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/bt_otp_request_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request new token"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="68dp"
+        android:layout_alignTop="@+id/bt_otp_login_alert"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/bt_otp_login_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_below="@+id/et_otp_alert"
+        android:layout_toStartOf="@+id/bt_otp_request_alert" />
+
+
+</RelativeLayout>

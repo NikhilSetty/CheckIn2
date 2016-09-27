@@ -55,7 +55,10 @@
         <service
             android:name=".Service.LocationMonitoringService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".OTP_when_NOChannels" />
+        <activity android:name=".ChannelListForUser"></activity>
     </application>
 
 </manifest>

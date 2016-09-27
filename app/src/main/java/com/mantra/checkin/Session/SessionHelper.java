@@ -14,6 +14,8 @@ import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
 import com.mantra.checkin.Service.LocationMonitoringService;
 
+import java.util.List;
+
 
 /**
  * Created by nravishankar on 9/19/2016.
@@ -29,6 +31,7 @@ public class SessionHelper {
     public static UserInfo user;
     public static Boolean LoginStatus = false;
     public static Boolean AnySubscribedChannels = false;
+    public static List<ChannelModel> channelModelList;
 
     public SessionHelper(Context context){
         mR = context.getResources();
