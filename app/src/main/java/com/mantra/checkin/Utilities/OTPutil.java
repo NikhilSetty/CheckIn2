@@ -46,7 +46,8 @@ public class OTPutil {
 //        tokenjson.put(UserInfoJSON.USERID, "2013");
 //        tokenjson.put(ChannelJsonKeys.ChannelId,"1");
 //        tokenjson.put(OTPJsonkeys.Token,token);
-//        jsonObject.put(OTPJsonkeys.OTP, tokenjson);
+        jsonObject.put(OTPJsonkeys.OTP, tokenjson);
+        Log.d("OTP",jsonObject.toString());
         return jsonObject.toString();
     }
 

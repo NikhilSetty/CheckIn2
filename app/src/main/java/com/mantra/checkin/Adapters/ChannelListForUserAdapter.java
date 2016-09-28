@@ -168,7 +168,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                 HttpPost httpPost = new HttpPost();
                 try {
                     Log.d(TAG, json);
-                    response = httpPost.post(APIUrls.BaseURl + APIUrls.RegisterToChannel, json);
+                    response = httpPost.post(APIUrls.BaseURl + APIUrls.GETPUBLICCHANNEL, json);
                     ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
                     data = new JSONObject(response).getString("Data");
                     switch (responseStatusCodes) {
