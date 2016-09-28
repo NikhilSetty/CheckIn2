@@ -66,6 +66,7 @@ public class ChannelDbHandler {
             if(!doesChannelExist) {
                 ContentValues values = new ContentValues();
                 values.put(DbTableStrings.CHANNEL_ID, model.ChannelId);
+                values.put(DbTableStrings.CHANNEL_NAME, model.Name);
                 values.put(DbTableStrings.CHANNEL_IS_ACTIVE, "true");
                 values.put(DbTableStrings.CHANNEL_IS_LOCATION_BASED, model.IsLocationBased ? "true" : "false");
                 values.put(DbTableStrings.CHANNEL_ISPUBLIC, model.IsPublic ? "true" : "false");

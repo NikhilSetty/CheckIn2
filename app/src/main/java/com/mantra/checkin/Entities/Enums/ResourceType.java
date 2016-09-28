@@ -46,4 +46,22 @@ public enum ResourceType {
         }
         return null;
     }
+
+    public static String getString(ResourceType type){
+        switch (type){
+            case Profiles:
+                return "Profiles";
+            case Url:
+                return "Url";
+            case Application:
+                return "Application";
+            case Contact:
+                return "Contact";
+            case Venue:
+                return "Venue";
+            case ChatRoom:
+                return "ChatRoom";
+        }
+        return null;
+    }
 }
