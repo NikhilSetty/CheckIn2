@@ -45,6 +45,9 @@ public class SplashActivity extends AppCompatActivity {
         }else if(SessionHelper.user.getPhoneNumber().isEmpty()){
             Intent i = new Intent(this, PhoneNumberActivity.class);
             startActivity(i);
+        }else if(!SessionHelper.AnySubscribedChannels){
+            Intent i = new Intent(this, ChannelListForUser.class);
+            startActivity(i);
         }else{
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);

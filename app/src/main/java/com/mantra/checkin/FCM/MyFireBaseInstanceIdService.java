@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.mantra.checkin.APIURLs.APIUrls;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
 import com.mantra.checkin.NetworkHelpers.Utility;
@@ -44,6 +45,11 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
             @Override
             protected Boolean doInBackground(String[] params) {
                 Log.d(TAG,SessionHelper.LoginStatus.toString());
+                String token = FirebaseInstanceId.getInstance().getToken();
+                if(token == null) {
+                    Log.e(TAG, "token is empty.");
+                    return false;
+                }
                 if(SessionHelper.LoginStatus && !token.isEmpty()) {
                     try {
                         JSONObject json = new JSONObject();
@@ -51,7 +57,7 @@ public class MyFireBaseInstanceIdService extends FirebaseInstanceIdService {
                         json.put("CheckInServerUserId", SessionHelper.user.getCheckInServerUserId());
                         json.put("RegistrationId", token);
                         String jsonEntity = json.toString();
-                        String response = new HttpPost().post(SessionHelper.BaseUrl + "\\", jsonEntity);
+                        String response = new HttpPost().post(APIUrls.BaseURl + "/CheckIn/api/User/UpdateUserRegistrationId", jsonEntity);
 
                         ResponseStatusCodes statusCodes = Utility.getResponseStatus(response);
 

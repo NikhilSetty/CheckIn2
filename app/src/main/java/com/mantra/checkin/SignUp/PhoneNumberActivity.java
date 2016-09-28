@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.mantra.checkin.APIURLs.APIUrls;
 import com.mantra.checkin.ChannelListForUser;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
@@ -78,7 +79,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
                             json.put("CheckInServerUserId", SessionHelper.user.getCheckInServerUserId());
                             json.put("PhoneNumber", phoneNumber);
                             String jsonEntity = json.toString();
-                            String response = new HttpPost().post("serverUrl", jsonEntity);
+                            String response = new HttpPost().post(APIUrls.BaseURl + "/CheckIn/api/User/AddPhoneNumber", jsonEntity);
 
                             ResponseStatusCodes statusCodes = Utility.getResponseStatus(response);
 
@@ -110,9 +111,9 @@ public class PhoneNumberActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }else{
-            Intent i = new Intent(this, ChannelListForUser.class);
-            startActivity(i);
-            finish();
+                Intent i = new Intent(this, ChannelListForUser.class);
+                startActivity(i);
+                finish();
             }
 
         }catch (Exception e){

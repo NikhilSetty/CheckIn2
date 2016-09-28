@@ -72,7 +72,7 @@ public class ChannelListForUser extends AppCompatActivity {
 //                    }
                     response = "{\n" +
                             "\t\"Channels\": [{\n" +
-                            "\t\t\"ChannelId\": \"20\",\n" +
+                            "\t\t\"ChannelId\": \"2\",\n" +
                             "\t\t\"Name\": \"\",\n" +
                             "\t\t\"IsPublic\": \"true\",\n" +
                             "\t\t\"IsLocationBased\": \"true\"\n" +

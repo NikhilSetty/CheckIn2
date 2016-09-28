@@ -6,11 +6,13 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.DBHandlers.SettingsInfoDBHandler;
 import com.mantra.checkin.DBHandlers.UserInfoDBHandler;
 import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.Entities.Models.UserInfo;
+import com.mantra.checkin.FCM.MyFireBaseInstanceIdService;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
 import com.mantra.checkin.Service.LocationMonitoringService;
 
@@ -24,7 +26,6 @@ public class SessionHelper {
 
     private final String TAG = "SessionHelper";
 
-    public static String BaseUrl = "http://10.84.244.17";
     public static Resources mR;
     public static LocationUtility mLocationUtility;
     public static Location mLocation;
@@ -39,6 +40,7 @@ public class SessionHelper {
         LoginStatus = SettingsInfoDBHandler.CheckLoginStatus(context);
         if(LoginStatus){
             user = UserInfoDBHandler.FetchCurrentUserDetails(context);
+            MyFireBaseInstanceIdService.sendRegistrationToServer(context);
         }else{
             user = new UserInfo();
         }
@@ -57,7 +59,7 @@ public class SessionHelper {
 
             List<ChannelModel> models = ChannelDbHandler.getAllChannelsAndDetails(context);
         }else {
-
+/*
             // test
             ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(context, "{\n" +
                     "        \"ChannelId\": 2,\n" +
@@ -145,7 +147,7 @@ public class SessionHelper {
                     "                }\n" +
                     "            ]\n" +
                     "        }\n" +
-                    "    }");
+                    "    }");*/
         }
     }
 }

@@ -21,7 +21,7 @@ public class HttpPost {
         InputStream is = null;
 
         try {
-            Log.d(DEBUG_TAG,"posting");
+            Log.d(DEBUG_TAG,"posting to " + stringUrl);
             URL url = new URL(stringUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.disconnect();
