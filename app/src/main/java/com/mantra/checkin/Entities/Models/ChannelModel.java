@@ -30,6 +30,25 @@ public class ChannelModel {
     public String Name = "";
     public Boolean IsPublic = true;
     public Boolean IsLocationBased = false;
+    public Boolean IsAuthenticated;
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public Boolean getAuthenticated() {
+        return IsAuthenticated;
+    }
+
+    public void setAuthenticated(Boolean authenticated) {
+        IsAuthenticated = authenticated;
+    }
+
+    public String Description = "";
     public Location ChannelActiveLocation = new Location("");
     public Date ChannelStartDate = new Date();
     public Date ChannelEndDateTime = new Date();

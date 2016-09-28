@@ -13,6 +13,7 @@ import com.mantra.checkin.Entities.JSONKEYS.ChannelJsonKeys;
 import com.mantra.checkin.Entities.JSONKEYS.OTPJsonkeys;
 import com.mantra.checkin.Entities.JSONKEYS.UserInfoJSON;
 import com.mantra.checkin.Entities.Models.ChannelModel;
+import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.MainActivity;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
 import com.mantra.checkin.NetworkHelpers.Utility;
@@ -66,6 +67,7 @@ public class OTPutil {
 
 
         AsyncTask<String, String, Boolean> sendotptokenToServer = new AsyncTask<String, String, Boolean>() {
+            String data = "";
             String response = "";
             public ProgressDialog mProgressDialog;
 
@@ -84,6 +86,7 @@ public class OTPutil {
                 Log.d("OTP",aBoolean.toString());
                 if (aBoolean) {
                     Log.d(TAG,"inside true");
+                    Toast.makeText(context, "Authentication Successful", Toast.LENGTH_LONG).show();
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                 } else {
@@ -99,19 +102,19 @@ public class OTPutil {
                     Log.d(TAG, json);
                     response = httpPost.post(APIUrls.BaseURl + APIUrls.RegisterToChannel, json);
                     ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
+                    data = new JSONObject(response).getString("Data");
                     switch (responseStatusCodes) {
                         case Success:
-                            //ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(response);
-                            //SessionHelper.channelModelList.add(model);
-                            Toast.makeText(context, "Authentication Successful", Toast.LENGTH_LONG).show();
+                            ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(context,data);
+                            SessionHelper.channelModelList.add(model);
                             Log.d(TAG, "returning true");
                             return true;
                         case Error:
-                            Toast.makeText(context, "Invalid Token", Toast.LENGTH_LONG).show();
                             Log.d(TAG, "returning false");
                             return false;
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 Log.d(TAG, "returning false");
                 return false;
@@ -163,5 +166,14 @@ public class OTPutil {
             }
         };
         requestnewtoken.execute("");
+    }
+
+    public static String create_login_json_public_channel(String channelid) throws JSONException {
+        JSONObject publicjson = new JSONObject();
+        publicjson.put(UserInfoJSON.USERID,SessionHelper.user.getCheckInServerUserId());
+        publicjson.put(ChannelJsonKeys.ChannelId,channelid);
+        Log.d(TAG,publicjson.toString());
+        return publicjson.toString();
+
     }
 }
