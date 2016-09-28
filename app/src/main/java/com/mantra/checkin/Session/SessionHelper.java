@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -18,6 +19,7 @@ import com.mantra.checkin.Service.LocationMonitoringService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -35,7 +37,9 @@ public class SessionHelper {
     public static Boolean AnySubscribedChannels = false;
     public static List<ChannelModel> channelModelList = new ArrayList<ChannelModel>();
 
-    public static List<String> resourceMenuList = new ArrayList<>();
+
+    public static Stack<Fragment> fragmentStack = new Stack<Fragment>();
+
 
     public SessionHelper(Context context){
         mR = context.getResources();
@@ -57,12 +61,6 @@ public class SessionHelper {
         }
         //
         mLocation = mLocationUtility.getLastKnownLocation(context);
-
-        resourceMenuList.add("Url");
-        resourceMenuList.add("Applications");
-        resourceMenuList.add("Contacts");
-        resourceMenuList.add("Venue");
-        resourceMenuList.add("ChatRoom");
 
         // Check if there are any subscribed channels
         AnySubscribedChannels = ChannelDbHandler.CheckIfUserHasSubscribedToAnyChannels(context);
