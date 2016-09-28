@@ -22,8 +22,12 @@ import com.mantra.checkin.Entities.ViewModel.NavDrawerChildViewItem;
 import com.mantra.checkin.NavigationDrawer.ChannelListItem;
 import com.mantra.checkin.NavigationDrawer.NavigationDrawerRecyclerViewAdapter;
 import com.mantra.checkin.Session.SessionHelper;
+import com.mantra.checkin.UiFragments.Applications.ApplicationFragment;
+import com.mantra.checkin.UiFragments.ChatRooms.ChatRoomFragment;
+import com.mantra.checkin.UiFragments.Contacts.ContactsFragment;
 import com.mantra.checkin.UiFragments.HomeFragment;
 import com.mantra.checkin.UiFragments.Urls.UrlFragment;
+import com.mantra.checkin.UiFragments.Venues.VenueFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +120,18 @@ public class MainActivity extends AppCompatActivity
         switch(item.Name) {
             case "Urls":
                 initialFragment = new UrlFragment();
+                break;
+            case "Applications":
+                initialFragment = new ApplicationFragment();
+                break;
+            case "Contacts":
+                initialFragment = new ContactsFragment();
+                break;
+            case "Venues":
+                initialFragment = new VenueFragment();
+                break;
+            case "ChatRooms":
+                initialFragment = new ChatRoomFragment();
                 break;
             default:
                 initialFragment = new HomeFragment();
