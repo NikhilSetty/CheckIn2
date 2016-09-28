@@ -155,6 +155,7 @@ public class LocationMonitoringService extends Service {
         public void sendResult(String message, Location loc) {
             if(loc != null){
                 // todo geo fencing algorithm
+
                 // todo handle multiple profiles and monitor active.
             }else{
                 Log.d(TAG, message + " Failed at isBetterLocation.");

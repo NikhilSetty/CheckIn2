@@ -9,5 +9,5 @@ public class APIUrls {
     public static String ADDUSER = "/CheckIn/api/User/AddUser";
     public static String RESENDOTP = "/CheckIn/api/UserChannelMap/ResendOtp";
     public static String RETRIEVECHANNELS = "/CheckIn/api/Channel/RetrieveChannelsByLocationAndUser";
-    public static String GETPUBLICCHANNEL = "/CheckIn/api/UserChannelMap/GetPublicChannel";
+    public static String GETCHANNEL = "/CheckIn/api/UserChannelMap/GetChannel";
 }

@@ -132,7 +132,7 @@ public class ChannelListForUser extends AppCompatActivity {
                     channelModel.setChannelId(channelinfo.getString(ChannelJsonKeys.ChannelId));
                     channelModel.setName(channelinfo.getString(ChannelJsonKeys.ChannelName));
                     channelModel.setPublic(Boolean.valueOf(channelinfo.getString(ChannelJsonKeys.ChannelIsPublic)));
-                    //todo set channel desctiption
+                   channelModel.setDescription(channelinfo.getString(ChannelJsonKeys.ChannelDescription));
                     channelModel.setAuthenticated(Boolean.valueOf(channelinfo.getString(ChannelJsonKeys.ChannelAuthentication)));
                     channelModelList.add(channelModel);
                 }

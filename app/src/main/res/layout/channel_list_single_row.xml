@@ -9,10 +9,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
->
+    android:weightSum="1">
+
+
     <TextView
         android:id="@+id/tvChannelTitle"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:paddingLeft="2dp"
         android:textSize="20dp"
@@ -23,14 +25,28 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <ImageView
+        android:layout_width="54dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/channellistlocksymbol"
+        android:layout_gravity="right"
+        android:layout_weight="0.12"
+        android:layout_alignTop="@+id/tvChannelTitle"
+        android:layout_alignBottom="@+id/tvChannelDescription"
+        android:layout_alignParentEnd="true" />
+
     <TextView
         android:id="@+id/tvChannelDescription"
-        android:layout_width="match_parent"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:text="Channel Description"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_below="@+id/tvChannelTitle"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:maxLines="5"
+        android:singleLine="false"
+        android:layout_below="@+id/tvChannelTitle" />
+
+
 </RelativeLayout>

@@ -21,7 +21,7 @@ public class ChannelJsonKeys {
     public final static String ChannelContacts = "Contacts";
     public final static String ChannelVenues = "Locations";
     public final static String ChannelChatRooms = "ChatRooms";
-    public final static String ChannelDescription = "Desctiption";
+    public final static String ChannelDescription = "Description";
     public final static String ChannelAuthentication = "IsAuthenticated";
 
 }

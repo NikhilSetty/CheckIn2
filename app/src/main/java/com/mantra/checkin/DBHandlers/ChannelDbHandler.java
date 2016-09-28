@@ -28,10 +28,9 @@ public class ChannelDbHandler {
     private static String TAG = "ChannelDbHandler";
 
 
-
-    public static Boolean CheckIfUserHasSubscribedToAnyChannels(Context context){
+    public static Boolean CheckIfUserHasSubscribedToAnyChannels(Context context) {
         Cursor c = null;
-        try{
+        try {
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
 
@@ -39,31 +38,30 @@ public class ChannelDbHandler {
 
             if (c.moveToFirst()) {
                 int id = c.getInt(c.getColumnIndex("_id"));
-                if(id > 0){
+                if (id > 0) {
                     return true;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        }finally {
-            if(c != null) {
+        } finally {
+            if (c != null) {
                 c.close();
             }
         }
         return false;
     }
 
-    public static Boolean AddChannelToDbIfItDoesNotExist(Context context, ChannelModel model){
+    public static Boolean AddChannelToDbIfItDoesNotExist(Context context, ChannelModel model) {
         Cursor c = null;
-        try{
+        try {
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
 
             Boolean doesChannelExist = DoesChannelExistInDb(context, model.ChannelId);
-            if(!doesChannelExist) {
+            if (!doesChannelExist) {
                 ContentValues values = new ContentValues();
                 values.put(DbTableStrings.CHANNEL_ID, model.ChannelId);
                 values.put(DbTableStrings.CHANNEL_NAME, model.Name);
@@ -76,7 +74,7 @@ public class ChannelDbHandler {
                 values.put(DbTableStrings.CHANNEL_TIME_OF_END, String.valueOf(model.ChannelEndDateTime));
 
 
-                Boolean  resourcesInsertionSuccessfull = ResourcesDbHelper.AddResourcesToDb(context, model.Resources);
+                Boolean resourcesInsertionSuccessfull = ResourcesDbHelper.AddResourcesToDb(context, model.Resources);
                 Boolean profileInsertionSuccessfull = ProfilesDbHelper.AddProfileToDbIfItDoesNotExist(context, model.Profiles);
                 Boolean urlsInsertionSuccessfull = UrlsDbHelper.AddUrlsToDb(context, model.Urls);
                 Boolean applicationsInsertionToDbSuccessfull = ApplicationsDbHelper.AddApplicationsToDb(context, model.Applications);
@@ -86,24 +84,24 @@ public class ChannelDbHandler {
 
                 db.insert(DbTableStrings.TABLE_NAME_CHANNEL, null, values);
 
-            }else {
+            } else {
                 // todo add update code
             }
             return true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        }finally {
-            if(c != null) {
+        } finally {
+            if (c != null) {
                 c.close();
             }
         }
         return false;
     }
 
-    public static Boolean DoesChannelExistInDb(Context context, String channelId){
+    public static Boolean DoesChannelExistInDb(Context context, String channelId) {
         Cursor c = null;
-        try{
+        try {
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
 
@@ -111,17 +109,16 @@ public class ChannelDbHandler {
 
             if (c.moveToFirst()) {
                 int id = c.getInt(c.getColumnIndex("_id"));
-                if(id > 0){
+                if (id > 0) {
                     return true;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        }finally {
-            if(c != null) {
+        } finally {
+            if (c != null) {
                 c.close();
             }
         }
@@ -132,14 +129,14 @@ public class ChannelDbHandler {
         Cursor c = null;
         List<ChannelModel> list = new ArrayList<>();
 
-        try{
+        try {
             dbHelper = new DbHelper(context);
             db = dbHelper.getWritableDatabase();
 
             c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_CHANNEL, null);
 
             if (c.getCount() != 0) {
-                if(c.getCount() != -1) {
+                if (c.getCount() != -1) {
                     if (c.moveToFirst()) {
                         do {
                             ChannelModel model = new ChannelModel();
@@ -162,21 +159,21 @@ public class ChannelDbHandler {
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        }finally {
-            if(c != null) {
+        } finally {
+            if (c != null) {
                 c.close();
             }
         }
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             ChannelModel model = list.get(i);
 
             model.Resources = ResourcesDbHelper.getAllResourcesForChannel(context, model.ChannelId);
-            for(int j = 0; j < model.Resources.size(); j++){
+            for (int j = 0; j < model.Resources.size(); j++) {
                 ChannelResourcesModel resourcesModel = model.Resources.get(j);
-                switch (resourcesModel.ResourceType){
+                switch (resourcesModel.ResourceType) {
                     case Profiles:
                         model.Profiles.add(ProfilesDbHelper.GetProfileForId(context, resourcesModel.ResourceId));
                         break;
@@ -199,5 +196,73 @@ public class ChannelDbHandler {
             }
         }
         return list;
+    }
+
+    public static ChannelModel get_model_from_channel_id(Context context,String channelid) {
+        Cursor c = null;
+        List<ChannelModel> list = new ArrayList<>();
+        try {
+            dbHelper = new DbHelper(context);
+            db = dbHelper.getWritableDatabase();
+
+            c = db.rawQuery("Select * from " + DbTableStrings.TABLE_NAME_CHANNEL + " where " + DbTableStrings.CHANNEL_ID + " = \"" + channelid + "\"", null);
+                    if (c.moveToFirst()) {
+                            ChannelModel model = new ChannelModel();
+
+                            model.ChannelId = c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_ID));
+                            model.Name = c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_NAME));
+                            model.IsPublic = (c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_ISPUBLIC))).equals("true");
+                            model.IsLocationBased = (c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_IS_LOCATION_BASED))).equals("true");
+                            double lattitude = Double.valueOf(c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_LATTITUDE)));
+                            double longitude = Double.valueOf(c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_LONGTITUDE)));
+                            model.ChannelActiveLocation.setLatitude(lattitude);
+                            model.ChannelActiveLocation.setLongitude(longitude);
+                            DateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss Z yyyy", Locale.US);
+                            model.ChannelStartDate = formatter.parse(c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_TIME_OF_START)));
+                            model.ChannelEndDateTime = formatter.parse(c.getString(c.getColumnIndex(DbTableStrings.CHANNEL_TIME_OF_END)));
+
+                            list.add(model);
+                    }
+
+
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            ChannelModel model = list.get(i);
+
+            model.Resources = ResourcesDbHelper.getAllResourcesForChannel(context, model.ChannelId);
+            for (int j = 0; j < model.Resources.size(); j++) {
+                ChannelResourcesModel resourcesModel = model.Resources.get(j);
+                switch (resourcesModel.ResourceType) {
+                    case Profiles:
+                        model.Profiles.add(ProfilesDbHelper.GetProfileForId(context, resourcesModel.ResourceId));
+                        break;
+                    case Url:
+                        model.Urls.add(UrlsDbHelper.GetUrlForId(context, resourcesModel.ResourceId));
+                        break;
+                    case Application:
+                        model.Applications.add(ApplicationsDbHelper.getApplicationForId(context, resourcesModel.ResourceId));
+                        break;
+                    case Contact:
+                        model.Contacts.add(ContactsDbHelper.getContactForId(context, resourcesModel.ResourceId));
+                        break;
+                    case Venue:
+                        model.Venues.add(VenueDbHelper.getVenueForId(context, resourcesModel.ResourceId));
+                        break;
+                    case ChatRoom:
+                        model.ChatRooms.add(ChatRoomDbHelper.getChatRoomForId(context, resourcesModel.ResourceId));
+                        break;
+                }
+            }
+            return model;
+        }
+        return null;
     }
 }

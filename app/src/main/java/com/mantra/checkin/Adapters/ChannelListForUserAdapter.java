@@ -3,11 +3,7 @@ package com.mantra.checkin.Adapters;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,13 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mantra.checkin.APIURLs.APIUrls;
+import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
-import com.mantra.checkin.Entities.JSONKEYS.OTPJsonkeys;
-import com.mantra.checkin.Entities.JSONKEYS.UserInfoJSON;
 import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.MainActivity;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
@@ -47,6 +43,8 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
     public String publicjson;
     public static String TAG = "ChannelListAdapter";
     public String response;
+    public String auth_private_channel="";
+
     //public ChannelModel channelModel;
     public ChannelListForUserAdapter(Context context,List<ChannelModel> channelModelList) {
         this.channelModelList = channelModelList;
@@ -64,7 +62,12 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
     public void onBindViewHolder(CustomViewHolder holder, int position) {
          final ChannelModel channelModel = channelModelList.get(position);
         holder.tvtitle.setText(channelModel.getName());
-        holder.tvdesctiption.setText("NEED CHANNEL DESC");
+        holder.tvdesctiption.setText(channelModel.getDescription());
+        if(!channelModel.getPublic()){
+            holder.channellistimageview.setImageResource(R.drawable.actiondecryptedicon);
+        }else if(channelModel.getPublic()){
+
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,6 +112,17 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
 
                         alertD.show();
                     }else{
+                        ChannelModel dbmodel = ChannelDbHandler.get_model_from_channel_id(mcontext,channelModel.getChannelId());
+                        if(dbmodel == null){
+                            try {
+                                auth_private_channel = OTPutil.create_login_json_public_channel(channelModel.getChannelId());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            LogintoMainwithoutOTP(mcontext,auth_private_channel);
+                        }else {
+                            SessionHelper.channelModelList.add(dbmodel);
+                        }
                         Intent i = new Intent(mcontext,MainActivity.class);
                         mcontext.startActivity(i);
                     }
@@ -133,7 +147,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
         return (null != channelModelList ? channelModelList.size() : 0);
     }
 
-    public void LogintoMainwithoutOTP(final Context context,final String json){
+    public void LogintoMainwithoutOTP(final Context context,final String publicjson){
 
         AsyncTask<String, String, Boolean> logintopublicchannel = new AsyncTask<String, String, Boolean>() {
             String data = "";
@@ -167,8 +181,8 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
             protected Boolean doInBackground(String... strings) {
                 HttpPost httpPost = new HttpPost();
                 try {
-                    Log.d(TAG, json);
-                    response = httpPost.post(APIUrls.BaseURl + APIUrls.GETPUBLICCHANNEL, json);
+                    Log.d(TAG, publicjson);
+                    response = httpPost.post(APIUrls.BaseURl + APIUrls.GETCHANNEL, publicjson);
                     ResponseStatusCodes responseStatusCodes = Utility.getResponseStatus(response);
                     data = new JSONObject(response).getString("Data");
                     switch (responseStatusCodes) {
@@ -196,11 +210,13 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         private TextView tvtitle;
         private TextView tvdesctiption;
+        private ImageView channellistimageview;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
             this.tvtitle = (TextView) itemView.findViewById(R.id.tvChannelTitle);
             this.tvdesctiption = (TextView) itemView.findViewById(R.id.tvChannelDescription);
+            this.channellistimageview =(ImageView) itemView.findViewById(R.id.channellistlocksymbol);
         }
 
     }
