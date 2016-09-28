@@ -10,4 +10,5 @@ public class APIUrls {
     public static String RESENDOTP = "/CheckIn/api/UserChannelMap/ResendOtp";
     public static String RETRIEVECHANNELS = "/CheckIn/api/Channel/RetrieveChannelsByLocationAndUser";
     public static String GETCHANNEL = "/CheckIn/api/UserChannelMap/GetChannel";
+    public static String SEND_MESSAGE = "/CheckIn/api/Chat/AddChatMessage";
 }

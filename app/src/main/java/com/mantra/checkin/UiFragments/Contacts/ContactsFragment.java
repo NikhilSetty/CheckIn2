@@ -1,4 +1,4 @@
-package com.mantra.checkin.UiFragments.Applications;
+package com.mantra.checkin.UiFragments.Contacts;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import com.mantra.checkin.R;
 import com.mantra.checkin.Session.SessionHelper;
 import com.mantra.checkin.UiFragments.Urls.UrlListViewAdapter;
 
-public class ApplicationFragment extends Fragment {
+public class ContactsFragment extends Fragment {
 
     ListView mListView;
 
@@ -29,11 +29,12 @@ public class ApplicationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_application, container, false);
-        mListView = (ListView) layout.findViewById(R.id.listViewApplications);
+        FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_contacts, container, false);
+        mListView = (ListView) layout.findViewById(R.id.listViewContacts);
         PopulateListView();
         return layout;
     }
+
 
     private void PopulateListView() {
         ChannelModel model = new ChannelModel();
@@ -44,8 +45,12 @@ public class ApplicationFragment extends Fragment {
             }
         }
 
-        ApplicationListViewAdapter adapter = new ApplicationListViewAdapter(getActivity(), 0, model.Applications);
+        ContactsListViewAdapter adapter = new ContactsListViewAdapter(getActivity(), 0, model.Contacts);
         mListView.setAdapter(adapter);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
     }
 
     @Override
