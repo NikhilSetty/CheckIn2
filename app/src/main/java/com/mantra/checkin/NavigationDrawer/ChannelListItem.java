@@ -1,6 +1,7 @@
 package com.mantra.checkin.NavigationDrawer;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.mantra.checkin.Entities.Models.ChannelResourcesModel;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  */
 public class ChannelListItem implements ParentListItem {
 
+    private List<ChannelResourcesModel> childrenList;
 
     @Override
     public List<?> getChildItemList() {

@@ -16,4 +16,14 @@ public enum ResponseStatusCodes {
         }
         return null;
     }
+
+    public static String getString(ResponseStatusCodes x){
+        switch (x){
+            case Success:
+                return "Success";
+            case Error:
+                return "Error";
+        }
+        return null;
+    }
 }

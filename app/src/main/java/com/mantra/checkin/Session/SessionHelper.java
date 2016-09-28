@@ -58,7 +58,6 @@ public class SessionHelper {
         if(AnySubscribedChannels){
             channelModelList = ChannelDbHandler.getAllChannelsAndDetails(context);
         }else {
-/*
             // test
             ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(context, "{\n" +
                     "        \"ChannelId\": 2,\n" +
@@ -146,7 +145,7 @@ public class SessionHelper {
                     "                }\n" +
                     "            ]\n" +
                     "        }\n" +
-                    "    }");*/
+                    "    }");
         }
     }
 }
