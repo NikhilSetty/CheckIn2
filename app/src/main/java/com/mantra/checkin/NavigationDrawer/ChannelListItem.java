@@ -59,7 +59,7 @@ public class ChannelListItem implements ParentListItem {
 
     @Override
     public boolean isInitiallyExpanded() {
-        return false;
+        return true;
     }
 
     public ChannelModel getChannelModel(){
