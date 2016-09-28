@@ -16,6 +16,7 @@ import com.mantra.checkin.FCM.MyFireBaseInstanceIdService;
 import com.mantra.checkin.LocationHelpers.LocationUtility;
 import com.mantra.checkin.Service.LocationMonitoringService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,6 +34,8 @@ public class SessionHelper {
     public static Boolean LoginStatus = false;
     public static Boolean AnySubscribedChannels = false;
     public static List<ChannelModel> channelModelList;
+
+    public static List<String> resourceMenuList = new ArrayList<>();
 
     public SessionHelper(Context context){
         mR = context.getResources();
@@ -52,6 +55,12 @@ public class SessionHelper {
         }catch (Exception e){
             Log.e(TAG, "Service start command : " + e.getMessage());
         }
+
+        resourceMenuList.add("Url");
+        resourceMenuList.add("Applications");
+        resourceMenuList.add("Contacts");
+        resourceMenuList.add("Venue");
+        resourceMenuList.add("ChatRoom");
 
         // Check if there are any subscribed channels
         AnySubscribedChannels = ChannelDbHandler.CheckIfUserHasSubscribedToAnyChannels(context);

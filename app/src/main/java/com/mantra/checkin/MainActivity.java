@@ -9,20 +9,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.mantra.checkin.Entities.Enums.ResourceType;
+import com.mantra.checkin.Entities.Interfaces.OnItemClick;
+import com.mantra.checkin.Entities.ViewModel.NavDrawerChildViewItem;
 import com.mantra.checkin.NavigationDrawer.ChannelListItem;
 import com.mantra.checkin.NavigationDrawer.NavigationDrawerRecyclerViewAdapter;
+import com.mantra.checkin.Session.SessionHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnItemClick {
 
     private RecyclerView mNavigationDrawerRecyclerView;
     private RecyclerView.Adapter mNavigationDrawerAdapter;
     private RecyclerView.LayoutManager mNavigationDrawerLayoutManager;
+
+    private final static String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +43,13 @@ public class MainActivity extends AppCompatActivity
         // Initialize Navigation Drawer ListView
         mNavigationDrawerRecyclerView = (RecyclerView) findViewById(R.id.navigation_drawer_recycler_view);
         mNavigationDrawerLayoutManager = new LinearLayoutManager(this);
-        mNavigationDrawerRecyclerView.setLayoutManager(mNavigationDrawerLayoutManager);
-        mNavigationDrawerAdapter = new NavigationDrawerRecyclerViewAdapter(new ArrayList<ChannelListItem>());
+        List<ChannelListItem> viewList = new ArrayList<>();
+        for(int i = 0; i < SessionHelper.channelModelList.size(); i++){
+            viewList.add(new ChannelListItem(SessionHelper.channelModelList.get(i)));
+        }
+        mNavigationDrawerAdapter = new NavigationDrawerRecyclerViewAdapter(this, viewList, this);
         mNavigationDrawerRecyclerView.setAdapter(mNavigationDrawerAdapter);
+        mNavigationDrawerRecyclerView.setLayoutManager(mNavigationDrawerLayoutManager);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,5 +104,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onClickItem(View caller, NavDrawerChildViewItem item) {
+        Log.d(TAG, "On item click pos : " + item.ChannelId);
     }
 }
