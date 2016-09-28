@@ -56,8 +56,7 @@ public class SessionHelper {
         // Check if there are any subscribed channels
         AnySubscribedChannels = ChannelDbHandler.CheckIfUserHasSubscribedToAnyChannels(context);
         if(AnySubscribedChannels){
-
-            List<ChannelModel> models = ChannelDbHandler.getAllChannelsAndDetails(context);
+            channelModelList = ChannelDbHandler.getAllChannelsAndDetails(context);
         }else {
 /*
             // test
