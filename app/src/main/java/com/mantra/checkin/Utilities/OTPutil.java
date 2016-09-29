@@ -13,6 +13,7 @@ import com.mantra.checkin.Entities.JSONKEYS.ChannelJsonKeys;
 import com.mantra.checkin.Entities.JSONKEYS.OTPJsonkeys;
 import com.mantra.checkin.Entities.JSONKEYS.UserInfoJSON;
 import com.mantra.checkin.Entities.Models.ChannelModel;
+import com.mantra.checkin.Entities.Models.ProfileModel;
 import com.mantra.checkin.Entities.Models.UserInfo;
 import com.mantra.checkin.MainActivity;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
@@ -64,7 +65,7 @@ public class OTPutil {
         return tokenjson.toString();
     }
 
-    public static void postOTPTokenandLogin(final Context context, final String json) {
+    public static void postOTPTokenandLogin(final Context context, final String json, final String channelid) {
 
 
         AsyncTask<String, String, Boolean> sendotptokenToServer = new AsyncTask<String, String, Boolean>() {
@@ -88,6 +89,8 @@ public class OTPutil {
                 if (aBoolean) {
                     Log.d(TAG,"inside true");
                     Toast.makeText(context, "Authentication Successful", Toast.LENGTH_LONG).show();
+                    ProfileModel.get_db_model_and_configure_profile(context,channelid);
+
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                 } else {
@@ -107,6 +110,7 @@ public class OTPutil {
                     switch (responseStatusCodes) {
                         case Success:
                             ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(context,data);
+
                             SessionHelper.channelModelList.add(model);
                             Log.d(TAG, "returning true");
                             return true;
@@ -122,6 +126,7 @@ public class OTPutil {
             }
         };
         sendotptokenToServer.execute("");
+
     }
     public static void ResendOTPtoken(final Context context, final String json){
         AsyncTask<String, String, Boolean> requestnewtoken = new AsyncTask<String, String, Boolean>() {

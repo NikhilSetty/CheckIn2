@@ -265,4 +265,23 @@ public class ChannelDbHandler {
         }
         return null;
     }
+
+    public static void remove_channel_from_db(Context context,String channelid){
+        dbHelper = new DbHelper(context);
+        db = dbHelper.getWritableDatabase();
+        try {
+            db.rawQuery("delete from " + DbTableStrings.TABLE_NAME_CHANNEL + " where " + DbTableStrings.CHANNEL_ID + " = \"" + channelid + "\"",null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.d(TAG,"delete from "+ DbTableStrings.TABLE_NAME_CHANNEL + " where " + DbTableStrings.CHANNEL_ID + " = \"" + channelid + "\"");
+        if(ChannelDbHandler.DoesChannelExistInDb(context,channelid)){
+            Log.d(TAG,"Channel not deleted from db");
+        }else{
+            Log.d(TAG,"Channel deleted");
+        }
+        db.close();
+
+
+    }
 }

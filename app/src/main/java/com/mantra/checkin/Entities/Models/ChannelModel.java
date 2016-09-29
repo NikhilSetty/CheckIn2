@@ -44,6 +44,14 @@ public class ChannelModel {
         return IsAuthenticated;
     }
 
+    public Location getChannelActiveLocation() {
+        return ChannelActiveLocation;
+    }
+
+    public void setChannelActiveLocation(Location channelActiveLocation) {
+        ChannelActiveLocation = channelActiveLocation;
+    }
+
     public void setAuthenticated(Boolean authenticated) {
         IsAuthenticated = authenticated;
     }

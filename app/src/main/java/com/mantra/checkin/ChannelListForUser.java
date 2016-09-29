@@ -47,7 +47,7 @@ public class ChannelListForUser extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_channellistforuser);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
-        SessionHelper.mLocation = SessionHelper.mLocationUtility.getLastKnownLocation(getApplicationContext());
+        SessionHelper.mLocation = SessionHelper.mLocationUtility.getLastKnownLocation(ChannelListForUser.this);
         UserInfo userInfo = UserInfoDBHandler.FetchCurrentUserDetails(getApplicationContext());
 
         populateRecyclerView();

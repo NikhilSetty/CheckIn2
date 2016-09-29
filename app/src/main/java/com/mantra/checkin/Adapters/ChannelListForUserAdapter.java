@@ -19,7 +19,9 @@ import android.widget.Toast;
 import com.mantra.checkin.APIURLs.APIUrls;
 import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
+import com.mantra.checkin.Entities.JSONKEYS.ProfileJsonKeys;
 import com.mantra.checkin.Entities.Models.ChannelModel;
+import com.mantra.checkin.Entities.Models.ProfileModel;
 import com.mantra.checkin.MainActivity;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
 import com.mantra.checkin.NetworkHelpers.Utility;
@@ -27,6 +29,7 @@ import com.mantra.checkin.R;
 import com.mantra.checkin.Session.SessionHelper;
 import com.mantra.checkin.Utilities.OTPutil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -92,7 +95,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                OTPutil.postOTPTokenandLogin(mcontext, json);
+                                OTPutil.postOTPTokenandLogin(mcontext, json,channelModel.getChannelId());
                             }
                         });
 
@@ -119,9 +122,12 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            LogintoMainwithoutOTP(mcontext,auth_private_channel);
+                            LogintoMainwithoutOTP(mcontext,auth_private_channel,channelModel.getChannelId());
                         }else {
                             SessionHelper.channelModelList.add(dbmodel);
+                            /////configure profile
+                           ProfileModel.get_db_model_and_configure_profile(mcontext,channelModel.getChannelId());
+                            //////////
                         }
                         Intent i = new Intent(mcontext,MainActivity.class);
                         mcontext.startActivity(i);
@@ -134,7 +140,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    LogintoMainwithoutOTP(mcontext,publicjson);
+                    LogintoMainwithoutOTP(mcontext,publicjson,channelModel.getChannelId());
                 }
 
             }
@@ -147,9 +153,9 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
         return (null != channelModelList ? channelModelList.size() : 0);
     }
 
-    public void LogintoMainwithoutOTP(final Context context,final String publicjson){
+    public void LogintoMainwithoutOTP(final Context context, final String publicjson, final String channelid){
 
-        AsyncTask<String, String, Boolean> logintopublicchannel = new AsyncTask<String, String, Boolean>() {
+        final AsyncTask<String, String, Boolean> logintopublicchannel = new AsyncTask<String, String, Boolean>() {
             String data = "";
             String response = "";
             public ProgressDialog mProgressDialog;
@@ -169,6 +175,9 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                 Log.d("OTP",aBoolean.toString());
                 if (aBoolean) {
                     Log.d(TAG,"inside true");
+                    Log.d(TAG,"configuring profile");
+                    ProfileModel.get_db_model_and_configure_profile(mcontext,channelid);
+
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                 } else {
@@ -189,6 +198,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                         case Success:
                             ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(context,data);
                             SessionHelper.channelModelList.add(model);
+
                             Log.d(TAG, "returning true");
                             return true;
                         case Error:
@@ -204,8 +214,6 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
         };
         logintopublicchannel.execute("");
     }
-
-
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         private TextView tvtitle;

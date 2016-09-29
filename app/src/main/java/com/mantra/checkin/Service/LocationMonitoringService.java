@@ -12,11 +12,21 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mantra.checkin.DBHandlers.ChannelDbHandler;
+import com.mantra.checkin.Entities.Models.ChannelModel;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LocationMonitoringService extends Service {
+    public List<ChannelModel> channelModelList = new ArrayList<ChannelModel>();
+    private Lock lock = new ReentrantLock();
 
     private final String TAG = "LocationMonitorService";
+    public static double LOCATIONBUFFER = 5000;
 
     Thread WorkerThread;
 
@@ -153,13 +163,32 @@ public class LocationMonitoringService extends Service {
         }
 
         public void sendResult(String message, Location loc) {
+            lock.lock();
             if(loc != null){
-                // todo geo fencing algorithm
+                channelModelList = ChannelDbHandler.getAllChannelsAndDetails(getApplicationContext());
+                for(int i = 0;i<channelModelList.size();i++){
+                    //check if channel is locationbased
+                    if(channelModelList.get(i).IsLocationBased){
+                        Location channellocation = channelModelList.get(i).ChannelActiveLocation;
 
+//                        double channellat = channelModelList.get(i).ChannelActiveLocation.getLatitude();
+//                        double channellong = channelModelList.get(i).ChannelActiveLocation.getLongitude();
+//                        double currentlat = loc.getLatitude();
+//                        double currentlong = loc.getLongitude();
+                        float distance = channellocation.distanceTo(loc);
+                        if(distance > LOCATIONBUFFER){
+                        //if(currentlat > channellat+LOCATIONBUFFER && currentlong > channellong+LOCATIONBUFFER){
+                            Log.d(TAG,"removing channel "+ channelModelList.get(i).getChannelId().toString());
+                            ChannelDbHandler.remove_channel_from_db(getApplicationContext(),channelModelList.get(i).getChannelId());
+                        }
+
+                    }
+                }
                 // todo handle multiple profiles and monitor active.
             }else{
                 Log.d(TAG, message + " Failed at isBetterLocation.");
             }
+            lock.unlock();
 
         }
 

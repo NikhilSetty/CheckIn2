@@ -6,5 +6,17 @@ package com.mantra.checkin.Entities.Enums;
 public enum WiFiConfigTypes {
     WEP,
     WPA,
-    Open
+    Open;
+
+    public static WiFiConfigTypes fromInteger(int x) {
+        switch(x) {
+            case 0:
+                return Open;
+            case 1:
+                return WEP;
+            case 2:
+                return WPA;
+        }
+        return null;
+    }
 }
