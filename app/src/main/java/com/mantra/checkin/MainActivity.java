@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
         SessionHelper.fragmentStack.push(new HomeFragment());
         currentChannelId = item.ChannelId;
         switch(item.Name) {
-            case "Urls":
+            case "Web Clip":
                 initialFragment = new UrlFragment();
                 break;
             case "Applications":
@@ -216,10 +216,10 @@ public class MainActivity extends AppCompatActivity
             case "Contacts":
                 initialFragment = new ContactsFragment();
                 break;
-            case "Venues":
+            case "Locations":
                 initialFragment = new VenueFragment();
                 break;
-            case "ChatRooms":
+            case "Chat Room":
                 isChatActive = true;
                 initialFragment = new ChatRoomFragment();
                 break;
