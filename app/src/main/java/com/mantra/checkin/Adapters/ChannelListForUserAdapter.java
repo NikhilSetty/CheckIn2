@@ -130,6 +130,8 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                             if(!ChannelListForUser.mIsFromMain) {
                                 Intent i = new Intent(mcontext, MainActivity.class);
                                 mcontext.startActivity(i);
+                            }else{
+                                SessionHelper.channelModelList.add(dbmodel);
                             }
                             ((Activity) mcontext).finish();
                         }
