@@ -155,7 +155,7 @@ public class ChatRoomFragment extends Fragment {
         }
     }
 
-    private void PopulateListView() {
+    public void PopulateListView() {
         currentChatRoom.messages = ChatMessagesDbHelper.getAllMessagesForChatRoomId(getActivity(), currentChatRoom.ChatRoomId);
         ChatMessagesListViewAdapter adapter = new ChatMessagesListViewAdapter(getActivity(), 0, currentChatRoom.messages);
         mListView.setAdapter(adapter);

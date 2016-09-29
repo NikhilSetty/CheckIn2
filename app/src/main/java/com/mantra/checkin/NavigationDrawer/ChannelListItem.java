@@ -18,10 +18,11 @@ public class ChannelListItem implements ParentListItem {
     private List<NavDrawerChildViewItem> childrenList;
 
     public ChannelListItem(ChannelModel model){
+        mChannelModel = model;
         childrenList = new ArrayList<>();
         if(model.Urls.size() > 0){
             NavDrawerChildViewItem navItem = new NavDrawerChildViewItem();
-            navItem.Name = "Urls";
+            navItem.Name = "Web Clip";
             navItem.ChannelId = model.getChannelId();
             childrenList.add(navItem);
         }
@@ -39,17 +40,16 @@ public class ChannelListItem implements ParentListItem {
         }
         if(model.Venues.size() > 0){
             NavDrawerChildViewItem navItem = new NavDrawerChildViewItem();
-            navItem.Name = "Venues";
+            navItem.Name = "Locations";
             navItem.ChannelId = model.getChannelId();
             childrenList.add(navItem);
         }
         if(model.ChatRooms.size() > 0){
             NavDrawerChildViewItem navItem = new NavDrawerChildViewItem();
-            navItem.Name = "ChatRooms";
+            navItem.Name = "Chat Room";
             navItem.ChannelId = model.getChannelId();
             childrenList.add(navItem);
         }
-        mChannelModel = model;
     }
 
     @Override
@@ -64,5 +64,17 @@ public class ChannelListItem implements ParentListItem {
 
     public ChannelModel getChannelModel(){
         return this.mChannelModel;
+    }
+
+    public Boolean getIsTitle(){
+        return (mChannelModel.Name.equals("privatChTitle") || mChannelModel.Name.equals("publicChTitle"));
+    }
+
+    public Boolean isPublicTitle(){
+        return  mChannelModel.Name.equals("publicChTitle");
+    }
+
+    public Boolean isPrivateTit(){
+        return  mChannelModel.Name.equals("privatChTitle");
     }
 }

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "360697764233-vj5l67hp99smf8mam0a8vpchr57q6dim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mantra.checkin",
+            "certificate_hash": "C2058240F2AB3211F21644F98F9A99FBCB0E91A1"
+          }
+        },
+        {
           "client_id": "360697764233-b48d58h3aq1oseko2tp03bn65bfa0k5e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

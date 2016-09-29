@@ -14,10 +14,10 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:id="@+id/image_view_logo"
         android:layout_margin="16dp"
-        android:src="@drawable/common_full_open_on_phone"/>
+        android:src="@drawable/app_icon"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"

@@ -1,5 +1,6 @@
 package com.mantra.checkin;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,11 +14,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mantra.checkin.Entities.Interfaces.OnItemClick;
+import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.Entities.ViewModel.NavDrawerChildViewItem;
 import com.mantra.checkin.NavigationDrawer.ChannelListItem;
 import com.mantra.checkin.NavigationDrawer.NavigationDrawerRecyclerViewAdapter;
@@ -28,6 +34,9 @@ import com.mantra.checkin.UiFragments.Contacts.ContactsFragment;
 import com.mantra.checkin.UiFragments.HomeFragment;
 import com.mantra.checkin.UiFragments.Urls.UrlFragment;
 import com.mantra.checkin.UiFragments.Venues.VenueFragment;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,19 +55,53 @@ public class MainActivity extends AppCompatActivity
     private static Fragment initialFragment;
     private static String mTitle = "";
 
+    private static boolean isChatActive = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        // Initialize Header
+        ImageView imageProfilePhoto = (ImageView) findViewById(R.id.imageViewProfilePhoto);
+        Picasso.with(getApplicationContext()).load(SessionHelper.user.RemotePhotoServerURL).into(imageProfilePhoto);
+        TextView textViewUserName = (TextView) findViewById(R.id.navDrawerUserName);
+        textViewUserName.setText(SessionHelper.user.UserName);
+        TextView textViewEmail = (TextView) findViewById(R.id.textViewNavDrawerEmail);
+        textViewEmail.setText(SessionHelper.user.UserEmail);
+
         // Initialize Navigation Drawer ListView
         mNavigationDrawerRecyclerView = (RecyclerView) findViewById(R.id.navigation_drawer_recycler_view);
         mNavigationDrawerLayoutManager = new LinearLayoutManager(this);
         List<ChannelListItem> viewList = new ArrayList<>();
+        List<ChannelListItem> viewListPrivate = new ArrayList<>();
+        List<ChannelListItem> viewListPublic = new ArrayList<>();
+        ChannelModel privateTitle = new ChannelModel();
+        privateTitle.Name = "privatChTitle";
+        privateTitle.ChannelId = "-123";
+        viewListPrivate.add(new ChannelListItem(privateTitle));
+        ChannelModel publicTitle = new ChannelModel();
+        publicTitle.Name = "publicChTitle";
+        publicTitle.ChannelId = "-124";
+        viewListPublic.add(new ChannelListItem(publicTitle));
+
         for(int i = 0; i < SessionHelper.channelModelList.size(); i++){
-            viewList.add(new ChannelListItem(SessionHelper.channelModelList.get(i)));
+            ChannelModel tModel = SessionHelper.channelModelList.get(i);
+            if(tModel.IsPublic){
+                viewListPublic.add(new ChannelListItem(tModel));
+            }else {
+                viewListPrivate.add(new ChannelListItem(tModel));
+            }
         }
+
+        for(int i = 0; i < viewListPrivate.size(); i++){
+            viewList.add(viewListPrivate.get(i));
+        }
+        for(int i = 0; i < viewListPublic.size(); i++){
+            viewList.add(viewListPublic.get(i));
+        }
+
         mNavigationDrawerAdapter = new NavigationDrawerRecyclerViewAdapter(this, viewList, this);
         mNavigationDrawerRecyclerView.setAdapter(mNavigationDrawerAdapter);
         mNavigationDrawerRecyclerView.setLayoutManager(mNavigationDrawerLayoutManager);
@@ -82,9 +125,55 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the acti    on bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
         return true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        activityResumed();
+
+        // Initialize Navigation Drawer ListView
+        mNavigationDrawerRecyclerView = (RecyclerView) findViewById(R.id.navigation_drawer_recycler_view);
+        mNavigationDrawerLayoutManager = new LinearLayoutManager(this);
+        List<ChannelListItem> viewList = new ArrayList<>();
+        List<ChannelListItem> viewListPrivate = new ArrayList<>();
+        List<ChannelListItem> viewListPublic = new ArrayList<>();
+        ChannelModel privateTitle = new ChannelModel();
+        privateTitle.Name = "privatChTitle";
+        privateTitle.ChannelId = "-123";
+        viewListPrivate.add(new ChannelListItem(privateTitle));
+        ChannelModel publicTitle = new ChannelModel();
+        publicTitle.Name = "publicChTitle";
+        publicTitle.ChannelId = "-124";
+        viewListPublic.add(new ChannelListItem(publicTitle));
+
+        for(int i = 0; i < SessionHelper.channelModelList.size(); i++){
+            ChannelModel tModel = SessionHelper.channelModelList.get(i);
+            if(tModel.IsPublic){
+                viewListPublic.add(new ChannelListItem(tModel));
+            }else {
+                viewListPrivate.add(new ChannelListItem(tModel));
+            }
+        }
+
+        for(int i = 0; i < viewListPrivate.size(); i++){
+            viewList.add(viewListPrivate.get(i));
+        }
+        for(int i = 0; i < viewListPublic.size(); i++){
+            viewList.add(viewListPublic.get(i));
+        }
+
+        mNavigationDrawerAdapter = new NavigationDrawerRecyclerViewAdapter(this, viewList, this);
+        mNavigationDrawerRecyclerView.setAdapter(mNavigationDrawerAdapter);
+        mNavigationDrawerRecyclerView.setLayoutManager(mNavigationDrawerLayoutManager);
+
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        activityPaused();
     }
 
     @Override
@@ -131,6 +220,7 @@ public class MainActivity extends AppCompatActivity
                 initialFragment = new VenueFragment();
                 break;
             case "ChatRooms":
+                isChatActive = true;
                 initialFragment = new ChatRoomFragment();
                 break;
             default:
@@ -149,6 +239,12 @@ public class MainActivity extends AppCompatActivity
         if(!SessionHelper.fragmentStack.lastElement().equals(new HomeFragment()) && SessionHelper.fragmentStack.size() != 1) {
             SessionHelper.fragmentStack.push(temp);
         }*/
+        SessionHelper.fragmentStack.push(initialFragment);
+        if(initialFragment.equals(new ChatRoomFragment())) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, initialFragment, "CHAT_ROOM")
+                    .commit();
+        }
         fragmentManager.beginTransaction()
                 .replace(R.id.container, initialFragment)
                 .commit();
@@ -156,6 +252,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed(){
+        if(isChatActive){
+            isChatActive = false;
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -173,8 +272,36 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public static Boolean getChatFragment(){
+        if(SessionHelper.fragmentStack.size() > 0){
+            try {
+                if(initialFragment.equals(new ChatRoomFragment())){
+                    ChatRoomFragment frag = (ChatRoomFragment) initialFragment;
+                    frag.PopulateListView();
+                }
+            }catch (Exception e){
+                Log.e(TAG, e.getMessage());
+            }
+        }
+        return null;
+    }
+
     public void onSectionAttached(String title) {
         mTitle = title;
     }
+
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
+    }
+
+    private static boolean activityVisible;
 
 }
