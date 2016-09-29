@@ -1,5 +1,6 @@
 package com.mantra.checkin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,9 @@ public class ChannelListForUser extends AppCompatActivity {
 
     List<ChannelModel> channelModelList;
 
+    public static Boolean mIsFromMain = false;
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,16 @@ public class ChannelListForUser extends AppCompatActivity {
         SessionHelper.mLocation = SessionHelper.mLocationUtility.getLastKnownLocation(ChannelListForUser.this);
         UserInfo userInfo = UserInfoDBHandler.FetchCurrentUserDetails(getApplicationContext());
 
+        mIsFromMain = false;
+        Bundle extras = getIntent().getExtras();
+        try {
+            mIsFromMain = extras.getBoolean("IsFromHome");
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
+            mIsFromMain = false;
+        }
+
+        context = getApplicationContext();
         populateRecyclerView();
     }
 
@@ -76,22 +90,6 @@ public class ChannelListForUser extends AppCompatActivity {
                         case Error:
                             break;
                     }
-                    //test
-//                    response = "{\n" +
-//                            "\t\"Channels\": [{\n" +
-//                            "\t\t\"ChannelId\": \"2\",\n" +
-//                            "\t\t\"Name\": \"\",\n" +
-//                            "\t\t\"IsPublic\": \"true\",\n" +
-//                            "\t\t\"IsLocationBased\": \"true\"\n" +
-//                            "\t}, {\n" +
-//                            "\t\t\"ChannelId\": \"30\",\n" +
-//                            "\t\t\"Name\": \"\",\n" +
-//                            "\t\t\"IsPublic\": \"false\",\n" +
-//                            "\t\t\"IsLocationBased\": \"true\"\n" +
-//                            "\t}]\n" +
-//                            "}";
-//                    String response2 = Utility.convertStandardJSONString(response);
-//                    parseJsonResponse(response2);
                 } catch (Exception e) {
                    // Log.e(TAG, e.getMessage());
                 }
@@ -101,9 +99,9 @@ public class ChannelListForUser extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                if(s!=null){
+                if(s != null){
                     //Response not null
-                    channelListForUserAdapter = new ChannelListForUserAdapter(ChannelListForUser.this,channelModelList);
+                    channelListForUserAdapter = new ChannelListForUserAdapter(ChannelListForUser.this, channelModelList);
                     recyclerView.setAdapter(channelListForUserAdapter);
                 }
             }

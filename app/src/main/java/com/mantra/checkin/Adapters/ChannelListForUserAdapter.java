@@ -1,5 +1,6 @@
 package com.mantra.checkin.Adapters;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mantra.checkin.APIURLs.APIUrls;
+import com.mantra.checkin.ChannelListForUser;
 import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
 import com.mantra.checkin.Entities.JSONKEYS.ProfileJsonKeys;
@@ -41,7 +43,7 @@ import java.util.List;
 public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListForUserAdapter.CustomViewHolder> {
 
     private List<ChannelModel> channelModelList;
-    private Context mcontext;
+    private final Context mcontext;
     public String json;
     public String publicjson;
     public static String TAG = "ChannelListAdapter";
@@ -49,7 +51,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
     public String auth_private_channel="";
 
     //public ChannelModel channelModel;
-    public ChannelListForUserAdapter(Context context,List<ChannelModel> channelModelList) {
+    public ChannelListForUserAdapter(Context context, List<ChannelModel> channelModelList) {
         this.channelModelList = channelModelList;
         this.mcontext = context;
     }
@@ -124,13 +126,13 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                             }
                             LogintoMainwithoutOTP(mcontext,auth_private_channel,channelModel.getChannelId());
                         }else {
-                            SessionHelper.channelModelList.add(dbmodel);
-                            /////configure profile
-                           ProfileModel.get_db_model_and_configure_profile(mcontext,channelModel.getChannelId());
-                            //////////
+                            // SessionHelper.channelModelList.add(dbmodel);
+                            if(!ChannelListForUser.mIsFromMain) {
+                                Intent i = new Intent(mcontext, MainActivity.class);
+                                mcontext.startActivity(i);
+                            }
+                            ((Activity) mcontext).finish();
                         }
-                        Intent i = new Intent(mcontext,MainActivity.class);
-                        mcontext.startActivity(i);
                     }
 
 
@@ -177,9 +179,11 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                     Log.d(TAG,"inside true");
                     Log.d(TAG,"configuring profile");
                     ProfileModel.get_db_model_and_configure_profile(mcontext,channelid);
-
-                    Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);
+                    if(!ChannelListForUser.mIsFromMain) {
+                        Intent i = new Intent(context, MainActivity.class);
+                        context.startActivity(i);
+                    }
+                    ((Activity) mcontext).finish();
                 } else {
                     Toast.makeText(context, "Failed to enter Channel", Toast.LENGTH_SHORT).show();
                 }
@@ -198,7 +202,6 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                         case Success:
                             ChannelModel model = ChannelModel.addChannelToDbAndGetModelFromJson(context,data);
                             SessionHelper.channelModelList.add(model);
-
                             Log.d(TAG, "returning true");
                             return true;
                         case Error:
@@ -214,6 +217,8 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
         };
         logintopublicchannel.execute("");
     }
+
+
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         private TextView tvtitle;
