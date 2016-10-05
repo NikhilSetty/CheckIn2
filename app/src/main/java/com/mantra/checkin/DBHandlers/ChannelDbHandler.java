@@ -11,6 +11,7 @@ import com.mantra.checkin.DB.DbHelper;
 import com.mantra.checkin.DB.DbTableStrings;
 import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.Entities.Models.ChannelResourcesModel;
+import com.mantra.checkin.Session.SessionHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -270,11 +271,13 @@ public class ChannelDbHandler {
         dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
         try {
-            db.rawQuery("delete from " + DbTableStrings.TABLE_NAME_CHANNEL + " where " + DbTableStrings.CHANNEL_ID + " = \"" + channelid + "\"",null);
+            db.execSQL("delete from " + DbTableStrings.TABLE_NAME_CHANNEL + " where " + DbTableStrings.CHANNEL_ID + " = \"" + channelid + "\"");
         }catch (Exception e){
             e.printStackTrace();
         }
         Log.d(TAG,"delete from "+ DbTableStrings.TABLE_NAME_CHANNEL + " where " + DbTableStrings.CHANNEL_ID + " = \"" + channelid + "\"");
+        SessionHelper.channelModelList = ChannelDbHandler.getAllChannelsAndDetails(context);
+
         if(ChannelDbHandler.DoesChannelExistInDb(context,channelid)){
             Log.d(TAG,"Channel not deleted from db");
         }else{
