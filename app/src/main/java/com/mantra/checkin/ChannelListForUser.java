@@ -145,8 +145,8 @@ public class ChannelListForUser extends AppCompatActivity {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(UserInfoJSON.USERID, SessionHelper.user.getCheckInServerUserId());
-            jsonObject.put(LocationJsonKeys.LATITUDE,12.9716);//SessionHelper.mLocation.getLatitude());
-            jsonObject.put(LocationJsonKeys.LONGITUDE,77.5946);//SessionHelper.mLocation.getLongitude());
+            jsonObject.put(LocationJsonKeys.LATITUDE,SessionHelper.mLocation.getLatitude());//SessionHelper.mLocation.getLatitude());
+            jsonObject.put(LocationJsonKeys.LONGITUDE,SessionHelper.mLocation.getLongitude());//SessionHelper.mLocation.getLongitude());
             Log.d(TAG,jsonObject.toString());
             return jsonObject.toString();
         }catch (Exception e){

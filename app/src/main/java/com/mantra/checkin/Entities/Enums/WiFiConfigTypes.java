@@ -11,11 +11,11 @@ public enum WiFiConfigTypes {
     public static WiFiConfigTypes fromInteger(int x) {
         switch(x) {
             case 0:
-                return Open;
-            case 1:
                 return WEP;
-            case 2:
+            case 1:
                 return WPA;
+            case 2:
+                return Open;
         }
         return null;
     }

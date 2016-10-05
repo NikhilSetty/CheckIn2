@@ -2,7 +2,7 @@
     <string name="app_name">CheckIn</string>
     <string name="title_activity_splash">SplashActivity</string>
 
-    <string name="server_client_id">360697764233-b48d58h3aq1oseko2tp03bn65bfa0k5e.apps.googleusercontent.com</string>
+    <string name="server_client_id">360697764233-vj5l67hp99smf8mam0a8vpchr57q6dim.apps.googleusercontent.com</string>
 
     <string name="gps_enable_message">Your GPS seems to be disabled, do you want to enable it?</string>
     <string name="yes_string">Yes</string>
