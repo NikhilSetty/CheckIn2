@@ -179,7 +179,7 @@ public class LocationMonitoringService extends Service {
                         if(distance > LOCATIONBUFFER){
                         //if(currentlat > channellat+LOCATIONBUFFER && currentlong > channellong+LOCATIONBUFFER){
                             Log.d(TAG,"removing channel "+ channelModelList.get(i).getChannelId().toString());
-                            ChannelDbHandler.remove_channel_from_db(getApplicationContext(),channelModelList.get(i).getChannelId());
+                            // ChannelDbHandler.remove_channel_from_db(getApplicationContext(),channelModelList.get(i).getChannelId());
                         }
 
                     }

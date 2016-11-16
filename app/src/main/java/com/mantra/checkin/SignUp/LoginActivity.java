@@ -3,6 +3,7 @@ package com.mantra.checkin.SignUp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.mantra.checkin.FCM.MyFireBaseInstanceIdService;
 import com.mantra.checkin.Entities.JSONKEYS.UserInfoJSON;
 import com.mantra.checkin.Entities.Models.SettingsInfo;
 import com.mantra.checkin.Entities.Models.UserInfo;
+import com.mantra.checkin.Helper.DownloadImageHelper;
 import com.mantra.checkin.NetworkHelpers.HttpPost;
 import com.mantra.checkin.NetworkHelpers.Utility;
 import com.mantra.checkin.R;
@@ -55,7 +57,6 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -128,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements
                     }else {
                         userinfo.setUserPhoto(acct.getPhotoUrl().toString());
                     }
+                    DownloadAndSaveUserProfilePhoto(acct.getPhotoUrl().toString());
                     UserInfoDBHandler.InsertUserDetails(getApplicationContext(), userinfo);
                 }catch(Exception e){
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -168,6 +170,25 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
+    private void DownloadAndSaveUserProfilePhoto(String url) {
+        try{
+            AsyncTask<String, Void, Void> task = new AsyncTask<String, Void, Void>() {
+                @Override
+                protected Void doInBackground(String... params) {
+                    try {
+                        DownloadImageHelper.downloadAndSaveImage(getApplicationContext(), params[0]);
+                    }catch (Exception e){
+
+                    }
+                    return null;
+                }
+            };
+            task.execute();
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -205,10 +226,10 @@ public class LoginActivity extends AppCompatActivity implements
           AsyncTask<String,String,String> PostServerDetails = new AsyncTask<String,String,String>(){
               @Override
               protected void onPreExecute() {
+                  super.onPreExecute();
                   mProgressDialog = new ProgressDialog(LoginActivity.this);
                   mProgressDialog.setMessage(getString(R.string.Fetching_details));
                   mProgressDialog.show();
-                  super.onPreExecute();
               }
 
               @Override

@@ -129,6 +129,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                             // SessionHelper.channelModelList.add(dbmodel);
                             if(!ChannelListForUser.mIsFromMain) {
                                 Intent i = new Intent(mcontext, MainActivity.class);
+                                MainActivity.currentChannelId = channelModel.getChannelId();
                                 mcontext.startActivity(i);
                             }else{
                                 SessionHelper.channelModelList.add(dbmodel);
@@ -183,6 +184,7 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
                     ProfileModel.get_db_model_and_configure_profile(mcontext,channelid);
                     if(!ChannelListForUser.mIsFromMain) {
                         Intent i = new Intent(context, MainActivity.class);
+                        MainActivity.currentChannelId = channelid;
                         context.startActivity(i);
                     }
                     ((Activity) mcontext).finish();

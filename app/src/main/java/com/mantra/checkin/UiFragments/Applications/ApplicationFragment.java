@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.MainActivity;
@@ -29,7 +30,7 @@ public class ApplicationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_application, container, false);
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.fragment_application, container, false);
         mListView = (ListView) layout.findViewById(R.id.listViewApplications);
         PopulateListView();
         return layout;

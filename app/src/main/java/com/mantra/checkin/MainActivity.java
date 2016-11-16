@@ -2,9 +2,12 @@ package com.mantra.checkin;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.mantra.checkin.Entities.Interfaces.OnItemClick;
@@ -32,14 +36,19 @@ import com.mantra.checkin.UiFragments.Applications.ApplicationFragment;
 import com.mantra.checkin.UiFragments.ChatRooms.ChatRoomFragment;
 import com.mantra.checkin.UiFragments.Contacts.ContactsFragment;
 import com.mantra.checkin.UiFragments.HomeFragment;
+import com.mantra.checkin.UiFragments.TabComponents.PagerAdapter;
 import com.mantra.checkin.UiFragments.Urls.UrlFragment;
 import com.mantra.checkin.UiFragments.Venues.VenueFragment;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnItemClick {
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     private static String mTitle = "";
 
     private static boolean isChatActive = false;
+    public static Map<Integer, String> fragmentMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         TextView textViewEmail = (TextView) findViewById(R.id.textViewNavDrawerEmail);
         textViewEmail.setText(SessionHelper.user.UserEmail);
 
-        // Initialize Navigation Drawer ListView
+        /*// Initialize Navigation Drawer ListView
         mNavigationDrawerRecyclerView = (RecyclerView) findViewById(R.id.navigation_drawer_recycler_view);
         mNavigationDrawerLayoutManager = new LinearLayoutManager(this);
         List<ChannelListItem> viewList = new ArrayList<>();
@@ -117,7 +127,90 @@ public class MainActivity extends AppCompatActivity
 
         // Fragments for all the profiles
         initialFragment = new HomeFragment();
-        replaceFragment();
+        replaceFragment();*/
+
+        ChannelModel currentModel = new ChannelModel();
+        fragmentMapper = new HashMap<>();
+
+        for(int i = 0; i < SessionHelper.channelModelList.size(); i++){
+            if(SessionHelper.channelModelList.get(i).getChannelId().equals(currentChannelId)){
+                currentModel = SessionHelper.channelModelList.get(i);
+                break;
+            }
+        }
+
+        toolbar.setTitleTextColor(getResources().getColor(R.color.primary));
+        toolbar.setTitle(currentModel.Name);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
+
+        // Mapping integer
+        int i = 0;
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        // Applications
+        TabLayout.Tab applicationsTab = tabLayout.newTab().setText("Applications");
+        if(currentModel.Applications.size() > 0){
+            tabLayout.addTab(applicationsTab);
+            fragmentMapper.put(i, "Applications");
+            i += 1;
+        }
+
+        // Contacts
+        TabLayout.Tab contactsTab = tabLayout.newTab().setText("Contacts");
+        if(currentModel.Applications.size() > 0){
+            tabLayout.addTab(contactsTab);
+            fragmentMapper.put(i, "Contacts");
+            i += 1;
+        }
+
+        // Urls
+        TabLayout.Tab urlsTab = tabLayout.newTab().setText("Urls");
+        if(currentModel.Applications.size() > 0){
+            tabLayout.addTab(urlsTab);
+            fragmentMapper.put(i, "Urls");
+            i += 1;
+        }
+
+        // Contacts
+        TabLayout.Tab venuesTab = tabLayout.newTab().setText("Venues");
+        if(currentModel.Applications.size() > 0){
+            tabLayout.addTab(venuesTab);
+            fragmentMapper.put(i, "Venues");
+            i += 1;
+        }
+
+        // Contacts
+        TabLayout.Tab chatroomTab = tabLayout.newTab().setText("Chat");
+        if(currentModel.Applications.size() > 0){
+            tabLayout.addTab(chatroomTab);
+            fragmentMapper.put(i, "Chat");
+            i += 1;
+        }
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
     @Override
@@ -125,7 +218,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the acti    on bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(mTitle);
         return true;
     }
 
@@ -134,7 +226,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         activityResumed();
 
-        // Initialize Navigation Drawer ListView
+        /*// Initialize Navigation Drawer ListView
         mNavigationDrawerRecyclerView = (RecyclerView) findViewById(R.id.navigation_drawer_recycler_view);
         mNavigationDrawerLayoutManager = new LinearLayoutManager(this);
         List<ChannelListItem> viewList = new ArrayList<>();
@@ -167,7 +259,7 @@ public class MainActivity extends AppCompatActivity
 
         mNavigationDrawerAdapter = new NavigationDrawerRecyclerViewAdapter(this, viewList, this);
         mNavigationDrawerRecyclerView.setAdapter(mNavigationDrawerAdapter);
-        mNavigationDrawerRecyclerView.setLayoutManager(mNavigationDrawerLayoutManager);
+        mNavigationDrawerRecyclerView.setLayoutManager(mNavigationDrawerLayoutManager);*/
 
     }
     @Override
@@ -184,7 +276,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_home) {
             return true;
         }
 
@@ -234,11 +326,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void replaceFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        /*Fragment temp = initialFragment;
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
+        *//*Fragment temp = initialFragment;
         if(!SessionHelper.fragmentStack.lastElement().equals(new HomeFragment()) && SessionHelper.fragmentStack.size() != 1) {
             SessionHelper.fragmentStack.push(temp);
-        }*/
+        }*//*
         SessionHelper.fragmentStack.push(initialFragment);
         if(initialFragment.equals(new ChatRoomFragment())) {
             fragmentManager.beginTransaction()
@@ -247,12 +339,13 @@ public class MainActivity extends AppCompatActivity
         }
         fragmentManager.beginTransaction()
                 .replace(R.id.container, initialFragment)
-                .commit();
+                .commit();*/
     }
 
     @Override
     public void onBackPressed(){
-        if(isChatActive){
+        super.onBackPressed();
+/*        if(isChatActive){
             isChatActive = false;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -269,7 +362,7 @@ public class MainActivity extends AppCompatActivity
             else{
                 finish();
             }
-        }
+        }*/
     }
 
     public static Boolean getChatFragment(){
