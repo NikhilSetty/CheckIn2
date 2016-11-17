@@ -31,6 +31,42 @@ public class ChannelModel {
     public Boolean IsPublic = true;
     public Boolean IsLocationBased = false;
     public Boolean IsAuthenticated;
+    public String IconUrl = "";
+    public String PrimaryColor = "";
+    public String SecondaryColor = "";
+    public String TertiaryColor = "";
+
+    public String getIconUrl() {
+        return IconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        IconUrl = iconUrl;
+    }
+
+    public String getPrimaryColor() {
+        return PrimaryColor;
+    }
+
+    public void setPrimaryColor(String primaryColor) {
+        PrimaryColor = primaryColor;
+    }
+
+    public String getSecondaryColor() {
+        return SecondaryColor;
+    }
+
+    public void setSecondaryColor(String secondaryColor) {
+        SecondaryColor = secondaryColor;
+    }
+
+    public String getTertiaryColor() {
+        return TertiaryColor;
+    }
+
+    public void setTertiaryColor(String tertiaryColor) {
+        TertiaryColor = tertiaryColor;
+    }
 
     public String getDescription() {
         return Description;

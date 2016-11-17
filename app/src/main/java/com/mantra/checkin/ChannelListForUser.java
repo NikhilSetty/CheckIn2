@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChannelListForUser extends AppCompatActivity {
@@ -114,6 +115,8 @@ public class ChannelListForUser extends AppCompatActivity {
 
     private void parseJsonResponse(String response) {
         channelModelList = new ArrayList<>();
+        channelListForUserAdapter.brandingmap = new HashMap<>();
+
 
         try {
             JSONObject jsonObject = new JSONObject(response);
@@ -132,6 +135,23 @@ public class ChannelListForUser extends AppCompatActivity {
                     channelModel.setPublic(Boolean.valueOf(channelinfo.getString(ChannelJsonKeys.ChannelIsPublic)));
                    channelModel.setDescription(channelinfo.getString(ChannelJsonKeys.ChannelDescription));
                     channelModel.setAuthenticated(Boolean.valueOf(channelinfo.getString(ChannelJsonKeys.ChannelAuthentication)));
+                    //branding parsing
+                    JSONObject brandingobj = channelinfo.getJSONObject(ChannelJsonKeys.ChannelBranding);
+                    Log.d(TAG,brandingobj.toString());
+//                    channelModel.setIconUrl(brandingobj.getString(ChannelJsonKeys.ChannelIconUrl));
+//                    channelModel.setPrimaryColor(brandingobj.getString(ChannelJsonKeys.ChannelPrimaryColor));
+//                    channelModel.setSecondaryColor(brandingobj.getString(ChannelJsonKeys.ChannelSecondaryColor));
+//                    channelModel.setTertiaryColor(brandingobj.getString(ChannelJsonKeys.ChannelTertiaryColor));
+                    try {
+                        channelListForUserAdapter.brandingvalues = new HashMap<>();
+                        ChannelListForUserAdapter.brandingvalues.put(ChannelJsonKeys.ChannelPrimaryColor, brandingobj.getString(ChannelJsonKeys.ChannelPrimaryColor));
+                        ChannelListForUserAdapter.brandingvalues.put(ChannelJsonKeys.ChannelSecondaryColor, brandingobj.getString(ChannelJsonKeys.ChannelSecondaryColor));
+                        ChannelListForUserAdapter.brandingvalues.put(ChannelJsonKeys.ChannelTertiaryColor, brandingobj.getString(ChannelJsonKeys.ChannelTertiaryColor));
+                        ChannelListForUserAdapter.brandingvalues.put(ChannelJsonKeys.ChannelIconUrl, brandingobj.getString(ChannelJsonKeys.ChannelIconUrl));
+                        ChannelListForUserAdapter.brandingmap.put(Integer.parseInt(brandingobj.getString(ChannelJsonKeys.ChannelId)), ChannelListForUserAdapter.brandingvalues);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
                     channelModelList.add(channelModel);
                 }
 

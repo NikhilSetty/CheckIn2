@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.mantra.checkin.APIURLs.APIUrls;
 import com.mantra.checkin.ChannelListForUser;
 import com.mantra.checkin.DBHandlers.ChannelDbHandler;
 import com.mantra.checkin.Entities.Enums.ResponseStatusCodes;
+import com.mantra.checkin.Entities.JSONKEYS.ChannelJsonKeys;
 import com.mantra.checkin.Entities.JSONKEYS.ProfileJsonKeys;
 import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.Entities.Models.ProfileModel;
@@ -30,11 +32,13 @@ import com.mantra.checkin.NetworkHelpers.Utility;
 import com.mantra.checkin.R;
 import com.mantra.checkin.Session.SessionHelper;
 import com.mantra.checkin.Utilities.OTPutil;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,6 +52,8 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
     public String publicjson;
     public static String TAG = "ChannelListAdapter";
     public String response;
+    public static HashMap<Integer,HashMap<String,String>> brandingmap;
+    public static HashMap<String,String> brandingvalues;
     public String auth_private_channel="";
 
     //public ChannelModel channelModel;
@@ -66,8 +72,21 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
          final ChannelModel channelModel = channelModelList.get(position);
+        holder.itemView.setBackgroundColor(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(channelModel.getChannelId())).get(ChannelJsonKeys.ChannelPrimaryColor)));
         holder.tvtitle.setText(channelModel.getName());
+        holder.tvtitle.setTextColor(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(channelModel.getChannelId())).get(ChannelJsonKeys.ChannelTertiaryColor)));
+        holder.tvdesctiption.setTextColor(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(channelModel.getChannelId())).get(ChannelJsonKeys.ChannelTertiaryColor)));
         holder.tvdesctiption.setText(channelModel.getDescription());
+//        try {
+//            Picasso.with(mcontext).load(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(channelModel.getChannelId())).get(ChannelJsonKeys.ChannelIconUrl)).into(holder.logoimageview);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+
+        //holder.tvtitle.setTextColor(Color.parseColor(channelModel.getTertiaryColor()));
+        //holder.tvdesctiption.setTextColor(Color.parseColor(channelModel.getTertiaryColor()));
+        holder.tvdesctiption.setText(channelModel.getDescription());
+
         if(!channelModel.getPublic()){
             holder.channellistimageview.setImageResource(R.drawable.actiondecryptedicon);
         }else if(channelModel.getPublic()){
@@ -228,12 +247,14 @@ public class ChannelListForUserAdapter extends RecyclerView.Adapter<ChannelListF
         private TextView tvtitle;
         private TextView tvdesctiption;
         private ImageView channellistimageview;
+       // private ImageView logoimageview;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
             this.tvtitle = (TextView) itemView.findViewById(R.id.tvChannelTitle);
             this.tvdesctiption = (TextView) itemView.findViewById(R.id.tvChannelDescription);
             this.channellistimageview =(ImageView) itemView.findViewById(R.id.channellistlocksymbol);
+            //this.logoimageview = (ImageView) itemView.findViewById(R.id.logo);
         }
 
     }

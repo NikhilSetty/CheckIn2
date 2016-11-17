@@ -1,5 +1,7 @@
 package com.mantra.checkin;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -26,7 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.mantra.checkin.Adapters.ChannelListForUserAdapter;
 import com.mantra.checkin.Entities.Interfaces.OnItemClick;
+import com.mantra.checkin.Entities.JSONKEYS.ChannelJsonKeys;
 import com.mantra.checkin.Entities.Models.ChannelModel;
 import com.mantra.checkin.Entities.ViewModel.NavDrawerChildViewItem;
 import com.mantra.checkin.NavigationDrawer.ChannelListItem;
@@ -139,10 +143,12 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        toolbar.setTitleTextColor(getResources().getColor(R.color.primary));
+        //toolbar.setTitleTextColor(getResources().getColor(R.color.primary));
         toolbar.setTitle(currentModel.Name);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setTitleTextColor(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(currentModel.getChannelId())).get(ChannelJsonKeys.ChannelTertiaryColor)));
+        toolbar.setBackgroundColor(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(currentModel.getChannelId())).get(ChannelJsonKeys.ChannelPrimaryColor)));
         setSupportActionBar(toolbar);
+
 
         // Mapping integer
         int i = 0;
@@ -193,6 +199,8 @@ public class MainActivity extends AppCompatActivity
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
+        tabLayout.setTabTextColors(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(currentModel.getChannelId())).get(ChannelJsonKeys.ChannelTertiaryColor)),Color.parseColor("white"));
+        tabLayout.setBackgroundColor(Color.parseColor(ChannelListForUserAdapter.brandingmap.get(Integer.parseInt(currentModel.getChannelId())).get(ChannelJsonKeys.ChannelPrimaryColor)));
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

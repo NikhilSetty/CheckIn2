@@ -23,5 +23,10 @@ public class ChannelJsonKeys {
     public final static String ChannelChatRooms = "ChatRooms";
     public final static String ChannelDescription = "Description";
     public final static String ChannelAuthentication = "IsAuthenticated";
+    public final static String ChannelIconUrl = "IconUrl";
+    public final static String ChannelPrimaryColor = "PrimaryColor";
+    public final static String ChannelSecondaryColor = "SecondaryColor";
+    public final static String ChannelTertiaryColor = "TertiaryColor";
+    public final static String ChannelBranding = "ChannelBranding";
 
 }
